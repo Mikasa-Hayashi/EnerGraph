@@ -10,7 +10,7 @@ app = Flask(__name__, template_folder='../frontend')
 
 @app.route('/')
 def index():
-    return render_template('graph.html')
+    return render_template('index.html')
 
 
 @app.route('/get_graph', methods=['POST'])
