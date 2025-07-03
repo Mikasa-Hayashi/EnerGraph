@@ -1,6 +1,5 @@
 import pandas as pd
-from backend import app, load_data, clear_data
-
+from backend import app
 
 def get_data_info(df: pd.DataFrame):
     print(df.head()) #  first 5 rows
