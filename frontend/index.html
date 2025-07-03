@@ -10,8 +10,8 @@
     <h1>Сдесь будет сайт <i>EnerGraph</i></h1>
     <button onclick="sendHello()">Press me ^_^</button>
 
-    <form action="/file-upload" method="POST">
-      <input type="file" name="fileCsv" />
+    <form action="/load-file" method="POST" enctype="multipart/form-data">
+      <input type="file" name="fileCsv" accept=".csv" />
       <button type="submit">Загрузить данные</button>
     </form>
 
