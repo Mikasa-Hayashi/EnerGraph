@@ -1,7 +1,9 @@
 import os
 from flask import Flask, render_template, jsonify
+
+from . import clear_data
 # from .data_handler import load_data, build_graph
-from . import load_data
+from .data_handler import load_data, validate_data
 import plotly .graph_objs as go
 import plotly
 import json
@@ -41,3 +43,13 @@ def get_graph():
 @app.route('/load-file', method=['POST'])
 def load_file():
     df = load_data()
+    valid = validate_data(df)
+
+    if not valid:
+        return jsonify({'message': 'The file is incorrect'})
+
+    clear_data(df)
+
+    return None
+
+

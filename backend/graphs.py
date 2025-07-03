@@ -4,3 +4,4 @@ import plotly
 
 
 def make_simple_graph():
+    pass

@@ -25,8 +25,7 @@ def get_data_info(df: pd.DataFrame):
 def main():
     # df = pd.read_csv('datasets/energydata_complete.csv')
     # get_data_info(df)
-    data = load_data()
-    clear_data(data)
+
     app.run(debug=True)
 
 
