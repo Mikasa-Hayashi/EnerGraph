@@ -1,15 +1,15 @@
 import pandas as pd
-
+from backend.app import app
 
 
 def get_data_info(df: pd.DataFrame):
-    print(df.head())
+    print(df.head()) #  first 5 rows
     print('-' * 100)
-    print(df.tail())
+    print(df.tail()) # last 5 rows
     print('-' * 100)
-    print(df.dtypes)
+    print(df.dtypes) # data types
     print('-' * 100)
-    print(df.columns)
+    print(df.columns) #
     print('-' * 100)
     print(df.shape)
     print('-' * 100)
@@ -23,8 +23,9 @@ def get_data_info(df: pd.DataFrame):
 
 
 def main():
-    df = pd.read_csv('datasets/energydata_complete.csv')
-    get_data_info(df)
+    # df = pd.read_csv('datasets/energydata_complete.csv')
+    # get_data_info(df)
+    app.run(debug=True)
 
 
 if __name__ == '__main__':
