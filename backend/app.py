@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, jsonify
 # from .data_handler import load_data, build_graph
+from . import load_data
 import plotly .graph_objs as go
 import plotly
 import json
@@ -35,3 +36,8 @@ def get_graph():
     graphJSON = fig.to_plotly_json()
 
     return jsonify(graphJSON)
+
+
+@app.route('/load-file', method=['POST'])
+def load_file():
+    df = load_data()
