@@ -1,6 +1,5 @@
 import pandas as pd
-from backend.app import app
-
+from backend import app
 
 def get_data_info(df: pd.DataFrame):
     print(df.head()) #  first 5 rows
@@ -25,6 +24,7 @@ def get_data_info(df: pd.DataFrame):
 def main():
     # df = pd.read_csv('datasets/energydata_complete.csv')
     # get_data_info(df)
+
     app.run(debug=True)
 
 
