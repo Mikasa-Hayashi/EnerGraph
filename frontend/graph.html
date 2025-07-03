@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>График</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h2>График потребления электроэнергии</h2>
+    <button id="showGraphBtn">Показать график</button>
+    <div id="graphDiv" style="width:600px; height:400px;"></div>
+
+    <script>
+        document.getElementById('showGraphBtn').onclick = function() {
+            fetch('/get_graph', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    // data.plot — HTML-код графика в виде JSON (список data и layout)
+                    Plotly.newPlot('graphDiv', data.data, data.layout);
+                })
+                .catch(err => alert('Ошибка при загрузке графика'));
+        };
+    </script>
+</body>
+</html>
