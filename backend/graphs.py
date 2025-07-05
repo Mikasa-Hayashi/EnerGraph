@@ -15,4 +15,25 @@ def energy_dependence_from_humidity():
     pass
 
 
-# def
+def graph_4():
+    pass
+
+
+def graph_5():
+    pass
+
+
+def graph_6():
+    pass
+
+
+def graph_7():
+    pass
+
+
+def graph_8():
+    pass
+
+
+def graph_9():
+    pass

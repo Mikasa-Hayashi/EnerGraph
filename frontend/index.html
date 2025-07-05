@@ -72,7 +72,7 @@
 
       // первый граф
       document.getElementById("showGraphEnergyOverTime").onclick = function () {
-        fetch("/get_graph", { method: "POST" })
+        fetch("/graph_1", { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
             // data.plot — HTML-код графика в виде JSON (список data и layout)
@@ -87,7 +87,7 @@
 
       // второй граф
       document.getElementById("showGraphEnergyOverTemp").onclick = function () {
-        fetch("/get_graph", { method: "POST" })
+        fetch("/graph_2", { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
             // data.plot — HTML-код графика в виде JSON (список data и layout)
@@ -102,7 +102,7 @@
 
       // третий граф
       document.getElementById("showGraphEnergyOverWet").onclick = function () {
-        fetch("/get_graph", { method: "POST" })
+        fetch("/graph_3", { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
             // data.plot — HTML-код графика в виде JSON (список data и layout)
@@ -118,7 +118,7 @@
       // четвертый граф
       document.getElementById("showGraphEnergyOverRooms").onclick =
         function () {
-          fetch("/get_graph", { method: "POST" })
+          fetch("/graph_4", { method: "POST" })
             .then((response) => response.json())
             .then((data) => {
               // data.plot — HTML-код графика в виде JSON (список data и layout)
@@ -134,7 +134,7 @@
       // пятый граф
       document.getElementById("showGraphEnergyOverWeather").onclick =
         function () {
-          fetch("/get_graph", { method: "POST" })
+          fetch("/graph_5", { method: "POST" })
             .then((response) => response.json())
             .then((data) => {
               // data.plot — HTML-код графика в виде JSON (список data и layout)
@@ -150,7 +150,7 @@
       // шестой граф
       document.getElementById("showGraphAverageEnergyOverHour").onclick =
         function () {
-          fetch("/get_graph", { method: "POST" })
+          fetch("/graph_6", { method: "POST" })
             .then((response) => response.json())
             .then((data) => {
               // data.plot — HTML-код графика в виде JSON (список data и layout)

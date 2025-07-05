@@ -7,6 +7,7 @@ from datetime import datetime
 def load_data(filepath):
     try:
         df = pd.read_csv(filepath)
+        df['date'] = pd.to_datetime(df['date'])
     except:
         pass
 
@@ -14,9 +15,10 @@ def load_data(filepath):
 
 
 def validate_data(df):
+
     # Ожидаемые столбцы с их типами данных
     expected_columns = {
-        'date': 'object',
+        'date': 'datetime64[ns]',
         'Appliances': 'int64',
         'lights': 'int64',
         'T1': 'float64',

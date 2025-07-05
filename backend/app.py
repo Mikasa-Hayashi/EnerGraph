@@ -22,30 +22,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/get_graph', methods=['POST'])
-def get_graph():
-    # df = load_data()
-
-    # df = load_data()
-    # graph_html = build_graph(df)
-    # trace = go.Scatter(x='Appliances', y='T1')
-    # fig = go.Figure(data=[trace])
-    # graphJSON = fig.to_plotly_json()
-    # # return render_template('index.html', graph=graph_html)
-    # return jsonify(graphJSON)
-    x = [1, 2, 3, 4, 5]
-    y = [10, 15, 13, 17, 14]
-    # print(list(df['Appliances']))
-    trace = go.Scatter(x=x, y=y, mode='lines+markers', name='Потребление')
-    layout = go.Layout(title='График потребления электроэнергии')
-
-    fig = go.Figure(data=[trace], layout=layout)
-
-    graphJSON = fig.to_plotly_json()
-
-    return jsonify(graphJSON)
-
-
 @app.route('/load-file', methods=['POST'])
 def load_file():
     if 'file' not in request.files:
@@ -78,3 +54,65 @@ def load_file():
     return render_template('index.html')
 
 
+@app.route('/graph_1', methods=['POST'])
+def graph_1():
+    # df = load_data()
+
+    # df = load_data()
+    # graph_html = build_graph(df)
+    # trace = go.Scatter(x='Appliances', y='T1')
+    # fig = go.Figure(data=[trace])
+    # graphJSON = fig.to_plotly_json()
+    # # return render_template('index.html', graph=graph_html)
+    # return jsonify(graphJSON)
+    x = [1, 2, 3, 4, 5]
+    y = [10, 15, 13, 17, 14]
+    # print(list(df['Appliances']))
+    trace = go.Scatter(x=x, y=y, mode='lines+markers', name='Потребление')
+    layout = go.Layout(title='График потребления электроэнергии')
+
+    fig = go.Figure(data=[trace], layout=layout)
+
+    graphJSON = fig.to_plotly_json()
+
+    return jsonify(graphJSON)
+
+
+@app.route('/graph_2', methods=['POST'])
+def graph_2():
+    pass
+
+
+@app.route('/graph_3', methods=['POST'])
+def graph_3():
+    pass
+
+
+@app.route('/graph_4', methods=['POST'])
+def graph_4():
+    pass
+
+
+@app.route('/graph_5', methods=['POST'])
+def graph_5():
+    pass
+
+
+@app.route('/graph_6', methods=['POST'])
+def graph_6():
+    pass
+
+
+@app.route('/graph_7', methods=['POST'])
+def graph_7():
+    pass
+
+
+@app.route('/graph_8', methods=['POST'])
+def graph_8():
+    pass
+
+
+@app.route('/graph_9', methods=['POST'])
+def graph_9():
+    pass
