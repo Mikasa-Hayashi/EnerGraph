@@ -19,7 +19,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('deepseek_ex.html')
 
 
 @app.route('/get_graph', methods=['POST'])

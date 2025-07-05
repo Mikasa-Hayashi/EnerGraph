@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализ потребления электроэнергии</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .file-upload-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .upload-icon {
+            transition: all 0.3s ease;
+        }
+        .upload-btn:hover .upload-icon {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-blue-50 to-cyan-50 min-h-screen flex flex-col">
+    <!-- Шапка -->
+    <header class="bg-gradient-to-r from-cyan-600 to-teal-500 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <i class="fas fa-bolt text-2xl mr-3"></i>
+                <h1 class="text-2xl font-bold">ЭнергоАнализ</h1>
+            </div>
+
+            <!-- Навигация -->
+            <nav class="w-full md:w-auto">
+                <ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6">
+                    <li class="dropdown relative">
+                        <button class="flex items-center px-3 py-2 rounded hover:bg-teal-600 transition">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            Описание
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <ul class="dropdown-menu hidden absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">О проекте</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Как это работает</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Преимущества</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown relative">
+                        <button class="flex items-center px-3 py-2 rounded hover:bg-teal-600 transition">
+                            <i class="fas fa-users mr-2"></i>
+                            Кто мы
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <ul class="dropdown-menu hidden absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Наша команда</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Партнеры</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Контакты</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown relative">
+                        <button class="flex items-center px-3 py-2 rounded hover:bg-teal-600 transition">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            Примеры
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <ul class="dropdown-menu hidden absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Кейсы</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Отзывы</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Галерея</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown relative">
+                        <button class="flex items-center px-3 py-2 rounded hover:bg-teal-600 transition">
+                            <i class="fas fa-exchange-alt mr-2"></i>
+                            Аналоги
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <ul class="dropdown-menu hidden absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Сравнение</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Альтернативы</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown relative">
+                        <button class="flex items-center px-3 py-2 rounded hover:bg-teal-600 transition">
+                            <i class="fas fa-cogs mr-2"></i>
+                            Настройки
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <ul class="dropdown-menu hidden absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-10">
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Профиль</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">Интеграции</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-cyan-100">API</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
+        <div class="text-center mb-8">
+            <h2 class="text-4xl font-bold text-cyan-800 mb-2">Анализ потребления электроэнергии</h2>
+            <p class="text-lg text-gray-600">Загрузите данные для анализа энергопотребления вашего умного дома</p>
+        </div>
+
+        <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
+            <div class="file-upload border-2 border-dashed border-cyan-300 rounded-lg p-12 text-center cursor-pointer hover:bg-cyan-50 transition">
+                <input type="file" id="fileInput" class="file-upload-input" accept=".csv">
+                <div class="flex flex-col items-center justify-center">
+                    <i class="fas fa-cloud-upload-alt text-5xl text-cyan-500 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Перетащите CSV файл сюда</h3>
+                    <p class="text-gray-500 mb-4">или</p>
+                    <button class="upload-btn bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-6 py-3 rounded-full font-medium flex items-center hover:from-cyan-600 hover:to-teal-600 transition">
+                        Выберите файл
+                        <i class="upload-icon fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <p class="text-sm text-gray-400 mt-4">Поддерживаются только CSV файлы с данными энергопотребления</p>
+                </div>
+            </div>
+
+            <div id="fileInfo" class="mt-4 hidden">
+                <div class="flex items-center justify-between bg-cyan-100 rounded-lg p-3">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-csv text-cyan-600 mr-3"></i>
+                        <span id="fileName" class="font-medium"></span>
+                    </div>
+                    <button id="removeFile" class="text-cyan-600 hover:text-cyan-800">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <button class="w-full mt-4 bg-teal-500 text-white py-3 rounded-lg font-medium hover:bg-teal-600 transition">
+                    Анализировать данные <i class="fas fa-chart-bar ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
+            <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
+                <div class="text-cyan-500 mb-3">
+                    <i class="fas fa-tachometer-alt text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Мониторинг в реальном времени</h3>
+                <p class="text-gray-600">Отслеживайте потребление электроэнергии всех устройств в вашем умном доме</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
+                <div class="text-cyan-500 mb-3">
+                    <i class="fas fa-lightbulb text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Оптимизация расходов</h3>
+                <p class="text-gray-600">Выявляйте энергозатратные приборы и оптимизируйте их использование</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
+                <div class="text-cyan-500 mb-3">
+                    <i class="fas fa-chart-pie text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Детальная аналитика</h3>
+                <p class="text-gray-600">Получайте подробные отчеты и рекомендации по снижению потребления</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="bg-gradient-to-r from-cyan-700 to-teal-600 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2 flex items-center">
+                        <i class="fas fa-leaf mr-2"></i> ЭнергоАнализ
+                    </h3>
+                    <p class="text-cyan-100">Умные решения для энергоэффективного дома</p>
+                </div>
+
+                <div class="flex space-x-6">
+                    <a href="#" class="text-cyan-100 hover:text-white text-2xl transition">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="text-cyan-100 hover:text-white text-2xl transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-cyan-100 hover:text-white text-2xl transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-cyan-100 hover:text-white text-2xl transition">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-cyan-100 hover:text-white text-2xl transition">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-cyan-500 mt-6 pt-6 text-center text-cyan-100">
+                <p>&copy; 2023 ЭнергоАнализ. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+            const removeFile = document.getElementById('removeFile');
+
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    fileName.textContent = e.target.files[0].name;
+                    fileInfo.classList.remove('hidden');
+                }
+            });
+
+            removeFile.addEventListener('click', function() {
+                fileInput.value = '';
+                fileInfo.classList.add('hidden');
+            });
+
+            // Drag and drop functionality
+            const uploadArea = document.querySelector('.file-upload');
+
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('border-cyan-500', 'bg-cyan-50');
+            });
+
+            uploadArea.addEventListener('dragleave', function() {
+                this.classList.remove('border-cyan-500', 'bg-cyan-50');
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('border-cyan-500', 'bg-cyan-50');
+
+                if (e.dataTransfer.files.length > 0) {
+                    fileInput.files = e.dataTransfer.files;
+                    fileName.textContent = e.dataTransfer.files[0].name;
+                    fileInfo.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
