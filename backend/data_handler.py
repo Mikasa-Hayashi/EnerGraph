@@ -4,9 +4,9 @@ from datetime import datetime
 
 
 
-def load_data():
+def load_data(filepath):
     try:
-        df = pd.read_csv('datasets/energydata_complete.csv')
+        df = pd.read_csv(filepath)
     except:
         pass
 

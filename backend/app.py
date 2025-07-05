@@ -1,5 +1,8 @@
 import os
-from flask import Flask, render_template, jsonify
+
+from Scripts.bottle import redirect
+from flask import Flask, render_template, jsonify, flash, request, url_for
+from werkzeug.utils import secure_filename
 
 # from .data_handler import load_data, build_graph
 from .data_handler import validate_data, clear_data, load_data
@@ -7,8 +10,12 @@ import plotly .graph_objs as go
 import plotly
 import json
 
-app = Flask(__name__, template_folder='../frontend')
 
+UPLOAD_FOLDER = 'backend/datasets'
+
+app = Flask(__name__, template_folder='../frontend')
+app.secret_key = 'debi'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
@@ -41,14 +48,26 @@ def get_graph():
 
 @app.route('/load-file', methods=['POST'])
 def load_file():
-    df = load_data()
-    valid = validate_data(df)
+    if 'file' not in request.files:
+        flash('File not found')
+        return redirect(request.url)
 
-    if not valid:
-        return jsonify({'message': 'The file is incorrect'})
+    file = request.files['file']
 
-    clear_data(df)
+    if file.filename == '':
+       flash('No selected file')
+       return redirect(request.url)
 
-    return None
+    if file:
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        return f'Uploaded: {file.filename}'
+        # filename  = os.path.join(UPLOAD_FOLDER, file.filename)
+        # file.save(filepath)
+        # df = load_data(filepath)
+        # valid = validate_data(df)
+
+    return render_template('index.html')
 
 
