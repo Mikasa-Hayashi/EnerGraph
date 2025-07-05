@@ -10,11 +10,13 @@ def load_data(filepath):
     except:
         pass
 
+    return df
+
 
 def validate_data(df):
     # Ожидаемые столбцы с их типами данных
     expected_columns = {
-        'date': 'datetime64[ns]',
+        'date': 'object',
         'Appliances': 'int64',
         'lights': 'int64',
         'T1': 'float64',
@@ -104,7 +106,9 @@ def validate_data(df):
 
     except Exception as e:
         print(f"Ошибка при валидации файла: {str(e)}")
-        return None
+        return False
+
+    return True
 
 
 def clear_data(df):

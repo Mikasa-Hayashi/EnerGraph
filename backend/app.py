@@ -19,7 +19,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
-    return render_template('deepseek_ex.html')
+    return render_template('index.html')
 
 
 @app.route('/get_graph', methods=['POST'])
@@ -60,9 +60,16 @@ def load_file():
 
     if file:
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
 
-        return f'Uploaded: {file.filename}'
+        df = load_data(filepath)
+
+        print(validate_data(df))
+        if validate_data(df):
+            return f'Uploaded: {file.filename}'
+
+        return f'Error: {file.filename}'
         # filename  = os.path.join(UPLOAD_FOLDER, file.filename)
         # file.save(filepath)
         # df = load_data(filepath)
