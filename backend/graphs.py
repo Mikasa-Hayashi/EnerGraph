@@ -160,3 +160,75 @@ def plot_hourly_energy_consumption(df):
                       margin=dict(l=0, r=0, t=105, b=0))
     fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>"
                                                      "Потребление: %{y}")
+
+
+def plot_daily_energy_consumption(df):
+    df['total_energy'] = df['Appliances'] + df['lights']
+
+    daily_sum = df.resample('d', on='date')['total_energy'].sum().reset_index()
+    daily_appliances = df.resample('d', on='date')['Appliances'].sum().reset_index()
+    daily_lights = df.resample('d', on='date')['lights'].sum().reset_index()
+
+    fig = make_subplots(rows=2, cols=2,
+                        specs=[[{"rowspan": 2}, {}], [None, {}]],
+                        subplot_titles=("Общее энергопотребление", "Энергопотребление бытовых приборов",
+                                        "Энергопотребление света"))
+
+    fig.update_xaxes(title='Дата',
+                     range=[daily_sum['date'].iloc[-75],
+                            daily_sum['date'].iloc[-1] + pd.Timedelta(days=4)],
+                     row=1,
+                     col=1)
+    fig.update_xaxes(title='Дата',
+                     range=[daily_appliances['date'].iloc[-50],
+                            daily_appliances['date'].iloc[-1] + pd.Timedelta(days=4)],
+                     row=1,
+                     col=2)
+    fig.update_xaxes(title='Дата',
+                     range=[daily_lights['date'].iloc[-50],
+                            daily_lights['date'].iloc[-1] + pd.Timedelta(days=4)],
+                     row=2,
+                     col=2)
+    fig.update_yaxes(title='Энергопотребление',
+                     range=[min(daily_sum['total_energy'].tail(75)) - 5000,
+                            max(daily_sum['total_energy'].tail(75)) + 5000],
+                     zeroline=True,
+                     zerolinewidth=2,
+                     zerolinecolor='#902537',
+                     row=1,
+                     col=1)
+    fig.update_yaxes(title='Энергопотребление',
+                     range=[min(daily_appliances['Appliances'].tail(50)) - 5000,
+                            max(daily_appliances['Appliances'].tail(50)) + 5000],
+                     zeroline=True,
+                     zerolinewidth=2,
+                     zerolinecolor='#902537',
+                     row=1,
+                     col=2)
+    fig.update_yaxes(title='Энергопотребление',
+                     range=[min(daily_lights['lights'].tail(50)) - 300,
+                            max(daily_lights['lights'].tail(50)) + 300],
+                     zeroline=True,
+                     zerolinewidth=2,
+                     zerolinecolor='#902537',
+                     row=2,
+                     col=2)
+    fig.add_trace(go.Scatter(x=daily_sum['date'],
+                             y=daily_sum['total_energy'],
+                             mode='lines+markers', name=''), 1, 1)
+    fig.add_trace(go.Scatter(x=daily_appliances['date'],
+                             y=daily_appliances['Appliances'],
+                             mode='lines+markers', name=''), 1, 2)
+    fig.add_trace(go.Scatter(x=daily_lights['date'],
+                             y=daily_lights['lights'],
+                             mode='lines+markers', name=''), 2, 2)
+    fig.update_layout(title=dict(text='Почасовое энергопотребление приборов',
+                                 x=0.5,
+                                 xanchor='center',
+                                 yanchor='top',
+                                 font=dict(size=20)),
+                      legend_orientation="h",
+                      legend=dict(x=0.5, xanchor='center'),
+                      margin=dict(l=0, r=0, t=105, b=0))
+    fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>"
+                                                     "Потребление: %{y}")
