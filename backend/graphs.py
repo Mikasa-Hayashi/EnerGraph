@@ -44,10 +44,18 @@ def plot_total_energy_consumption(df):
     fig = go.Figure()
     fig.update_xaxes(range=[df['date'].iloc[-145], df['date'].iloc[-1] + pd.Timedelta(hours=2)])
     fig.update_yaxes(range=[min(df['Appliances'].tail(145) + df['lights'].tail(145)) - 100,
-                            max(df['Appliances'].tail(145) + df['lights'].tail(145)) + 100])
+                            max(df['Appliances'].tail(145) + df['lights'].tail(145)) + 100],
+                     zeroline=True,
+                     zerolinewidth=2,
+                     zerolinecolor='#902537')
     fig.add_trace(go.Scatter(x=df['date'], y=(df['Appliances'] + df['lights']), mode='lines+markers', name=''))
     fig.update_layout(title='Энергопотребление приборов',
                       xaxis_title='Дата',
                       yaxis_title='Энергопотребление',
                       margin=dict(l=0, r=0, t=30, b=0))
     fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>Потребление: %{y}")
+    fig.show()
+
+
+def plot_appliances_and_lights_energy_consumption(df):
+    pass
