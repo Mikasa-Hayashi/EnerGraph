@@ -1,4 +1,5 @@
 import plotly .graph_objs as go
+from plotly.subplots import make_subplots
 import plotly
 import pandas as pd
 
@@ -54,8 +55,34 @@ def plot_total_energy_consumption(df):
                       yaxis_title='Энергопотребление',
                       margin=dict(l=0, r=0, t=30, b=0))
     fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>Потребление: %{y}")
-    fig.show()
 
 
 def plot_appliances_and_lights_energy_consumption(df):
-    pass
+    fig = make_subplots(rows=1, cols=2,
+                        subplot_titles=("Энергопотребление бытовых приборов", "Энергопотребление света"))
+    fig.update_xaxes(title='Дата', range=[df['date'].iloc[-75], df['date'].iloc[-1] + pd.Timedelta(hours=1)])
+    fig.update_yaxes(title='Энергопотребление',
+                     range=[min(df['Appliances'].tail(75)) - 50,
+                            max(df['Appliances'].tail(75)) + 50],
+                     zeroline=True,
+                     zerolinewidth=2,
+                     zerolinecolor='#902537',
+                     col=1)
+    fig.update_yaxes(title='Энергопотребление',
+                     range=[min(df['lights'].tail(75)) - 50,
+                            max(df['lights'].tail(75)) + 50],
+                     zeroline=True,
+                     zerolinewidth=2,
+                     zerolinecolor='#902537',
+                     col=2)
+    fig.add_trace(go.Scatter(x=df['date'], y=df['Appliances'], mode='lines+markers', name=''), 1, 1)
+    fig.add_trace(go.Scatter(x=df['date'], y=df['lights'], mode='lines+markers', name=''), 1, 2)
+    fig.update_layout(title=dict(text='Энергопотребление приборов (раздельно)',
+                                 x=0.5,
+                                 xanchor='center',
+                                 yanchor='top',
+                                 font=dict(size=20)),
+                      legend_orientation="h",
+                      legend=dict(x=0.5, xanchor='center'),
+                      margin=dict(l=0, r=0, t=105, b=0))
+    fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>Потребление: %{y}")
