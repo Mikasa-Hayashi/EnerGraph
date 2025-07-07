@@ -13,7 +13,7 @@ import json
 
 UPLOAD_FOLDER = 'backend/datasets'
 
-app = Flask(__name__, template_folder='../frontend')
+app = Flask(__name__, template_folder='../frontend', static_folder='../frontend')
 app.secret_key = 'debi'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 

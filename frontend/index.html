@@ -1,167 +1,18 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EnerGraph</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  </head>
-  <body>
-    <h1>Сдесь будет сайт <i>EnerGraph</i></h1>
-    <button onclick="sendHello()">Press me ^_^</button>
-
-    <form action="/load-file" method="POST" enctype="multipart/form-data">
-      <input type="file" name="file" accept=".csv" />
-      <button type="submit">Загрузить данные</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EnerGraph</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <h1>EnerGraph</h1>
+    <form action="/load-file" method="POST" enctype="multipart/form-data" class="upload-form">
+      <input type="file" name="file" accept=".csv" required />
+      <button type="submit">Показать графики</button>
     </form>
-
-    <h2>График энергопотребления по времени</h2>
-    <button id="showGraphEnergyOverTime">Показать график</button>
-    <div
-      id="showGraphEnergyOverTime-container"
-      style="width: 600px; height: 400px"
-    ></div>
-
-    <h2>График энергопотребления от температуры</h2>
-    <button id="showGraphEnergyOverTemp">Показать график</button>
-    <div
-      id="showGraphEnergyOverTemp-container"
-      style="width: 600px; height: 400px"
-    ></div>
-
-    <h2>График энергопотребления от влажности</h2>
-    <button id="showGraphEnergyOverWet">Показать график</button>
-    <div
-      id="showGraphEnergyOverWet-container"
-      style="width: 600px; height: 400px"
-    ></div>
-
-    <h2>Диаграмма потребления по комнатам</h2>
-    <button id="showGraphEnergyOverRooms">Показать график</button>
-    <div
-      id="showGraphEnergyOverRooms-container"
-      style="width: 600px; height: 400px"
-    ></div>
-
-    <h2>График энергопотребления от погоды</h2>
-    <button id="showGraphEnergyOverWeather">Показать график</button>
-    <div
-      id="showGraphEnergyOverWeather-container"
-      style="width: 600px; height: 400px"
-    ></div>
-
-    <h2>График усредненного потребления энергии в определенное время суток</h2>
-    <button id="showGraphAverageEnergyOverHour">Показать график</button>
-    <div
-      id="showGraphAverageEnergyOverHour-container"
-      style="width: 600px; height: 400px"
-    ></div>
-
-    <script>
-      function sendHello() {
-        fetch("/hello", { method: "POST" })
-          .then((response) => response.json())
-          .then((data) => {
-            alert(data.message);
-          })
-          .catch((error) => {
-            alert("Ошибка запроса");
-            console.error(error);
-          });
-      }
-
-      // первый граф
-      document.getElementById("showGraphEnergyOverTime").onclick = function () {
-        fetch("/graph_1", { method: "POST" })
-          .then((response) => response.json())
-          .then((data) => {
-            // data.plot — HTML-код графика в виде JSON (список data и layout)
-            Plotly.newPlot(
-              "showGraphEnergyOverTime-container",
-              data.data,
-              data.layout
-            );
-          })
-          .catch((err) => alert("Ошибка при загрузке графика"));
-      };
-
-      // второй граф
-      document.getElementById("showGraphEnergyOverTemp").onclick = function () {
-        fetch("/graph_2", { method: "POST" })
-          .then((response) => response.json())
-          .then((data) => {
-            // data.plot — HTML-код графика в виде JSON (список data и layout)
-            Plotly.newPlot(
-              "showGraphEnergyOverTemp-container",
-              data.data,
-              data.layout
-            );
-          })
-          .catch((err) => alert("Ошибка при загрузке графика"));
-      };
-
-      // третий граф
-      document.getElementById("showGraphEnergyOverWet").onclick = function () {
-        fetch("/graph_3", { method: "POST" })
-          .then((response) => response.json())
-          .then((data) => {
-            // data.plot — HTML-код графика в виде JSON (список data и layout)
-            Plotly.newPlot(
-              "showGraphEnergyOverWet-container",
-              data.data,
-              data.layout
-            );
-          })
-          .catch((err) => alert("Ошибка при загрузке графика"));
-      };
-
-      // четвертый граф
-      document.getElementById("showGraphEnergyOverRooms").onclick =
-        function () {
-          fetch("/graph_4", { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => {
-              // data.plot — HTML-код графика в виде JSON (список data и layout)
-              Plotly.newPlot(
-                "showGraphEnergyOverRooms-container",
-                data.data,
-                data.layout
-              );
-            })
-            .catch((err) => alert("Ошибка при загрузке графика"));
-        };
-
-      // пятый граф
-      document.getElementById("showGraphEnergyOverWeather").onclick =
-        function () {
-          fetch("/graph_5", { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => {
-              // data.plot — HTML-код графика в виде JSON (список data и layout)
-              Plotly.newPlot(
-                "showGraphEnergyOverWeather-container",
-                data.data,
-                data.layout
-              );
-            })
-            .catch((err) => alert("Ошибка при загрузке графика"));
-        };
-
-      // шестой граф
-      document.getElementById("showGraphAverageEnergyOverHour").onclick =
-        function () {
-          fetch("/graph_6", { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => {
-              // data.plot — HTML-код графика в виде JSON (список data и layout)
-              Plotly.newPlot(
-                "showGraphAverageEnergyOverHour-container",
-                data.data,
-                data.layout
-              );
-            })
-            .catch((err) => alert("Ошибка при загрузке графика"));
-        };
-    </script>
-  </body>
+  </div>
+</body>
 </html>
