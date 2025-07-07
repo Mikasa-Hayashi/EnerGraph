@@ -43,7 +43,7 @@ def load_file():
 
         print(validate_data(df))
         if validate_data(df):
-            return f'Uploaded: {file.filename}'
+            return render_template('graphs.html')
 
         return f'Error: {file.filename}'
         # filename  = os.path.join(UPLOAD_FOLDER, file.filename)
