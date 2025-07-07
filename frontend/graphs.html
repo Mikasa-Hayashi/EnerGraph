@@ -21,52 +21,94 @@
     <h1>Сдесь будет сайт <i>EnerGraph</i></h1>
     <button onclick="sendHello()">Press me ^_^</button>
 
-    <form action="/load-file" method="POST" enctype="multipart/form-data">
-      <input type="file" name="file" accept=".csv" />
-      <button type="submit">Загрузить данные</button>
-    </form>
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 60rem">
+        <h2 class="card-title">График энергопотребления по времени</h2>
+        <button class="btn btn-primary w-100 py-2" id="showGraphEnergyOverTime">
+          Показать график
+        </button>
+        <div
+          id="showGraphEnergyOverTime-container"
+          style="width: 600px; height: 400px"
+        ></div>
+      </div>
+    </div>
 
-    <h2>График энергопотребления по времени</h2>
-    <button id="showGraphEnergyOverTime">Показать график</button>
-    <div
-      id="showGraphEnergyOverTime-container"
-      style="width: 600px; height: 400px"
-    ></div>
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 60rem">
+        <h2 class="card-title">График энергопотребления от температуры</h2>
+        <button class="btn btn-primary w-100 py-2" id="showGraphEnergyOverTemp">
+          Показать график
+        </button>
+        <div
+          id="showGraphEnergyOverTemp-container"
+          style="width: 600px; height: 400px"
+        ></div>
+      </div>
+    </div>
 
-    <h2>График энергопотребления от температуры</h2>
-    <button id="showGraphEnergyOverTemp">Показать график</button>
-    <div
-      id="showGraphEnergyOverTemp-container"
-      style="width: 600px; height: 400px"
-    ></div>
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 60rem">
+        <h2>График энергопотребления от влажности</h2>
+        <button class="btn btn-primary w-100 py-2" id="showGraphEnergyOverWet">
+          Показать график
+        </button>
+        <div
+          id="showGraphEnergyOverWet-container"
+          style="width: 600px; height: 400px"
+        ></div>
+      </div>
+    </div>
 
-    <h2>График энергопотребления от влажности</h2>
-    <button id="showGraphEnergyOverWet">Показать график</button>
-    <div
-      id="showGraphEnergyOverWet-container"
-      style="width: 600px; height: 400px"
-    ></div>
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 60rem">
+        <h2>Диаграмма потребления по комнатам</h2>
+        <button
+          class="btn btn-primary w-100 py-2"
+          id="showGraphEnergyOverRooms"
+        >
+          Показать график
+        </button>
+        <div
+          id="showGraphEnergyOverRooms-container"
+          style="width: 600px; height: 400px"
+        ></div>
+      </div>
+    </div>
 
-    <h2>Диаграмма потребления по комнатам</h2>
-    <button id="showGraphEnergyOverRooms">Показать график</button>
-    <div
-      id="showGraphEnergyOverRooms-container"
-      style="width: 600px; height: 400px"
-    ></div>
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 60rem">
+        <h2>График энергопотребления от погоды</h2>
+        <button
+          class="btn btn-primary w-100 py-2"
+          id="showGraphEnergyOverWeather"
+        >
+          Показать график
+        </button>
+        <div
+          id="showGraphEnergyOverWeather-container"
+          style="width: 600px; height: 400px"
+        ></div>
+      </div>
+    </div>
 
-    <h2>График энергопотребления от погоды</h2>
-    <button id="showGraphEnergyOverWeather">Показать график</button>
-    <div
-      id="showGraphEnergyOverWeather-container"
-      style="width: 600px; height: 400px"
-    ></div>
-
-    <h2>График усредненного потребления энергии в определенное время суток</h2>
-    <button id="showGraphAverageEnergyOverHour">Показать график</button>
-    <div
-      id="showGraphAverageEnergyOverHour-container"
-      style="width: 600px; height: 400px"
-    ></div>
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 60rem">
+        <h2>
+          График усредненного потребления энергии в определенное время суток
+        </h2>
+        <button
+          class="btn btn-primary w-100 py-2"
+          id="showGraphAverageEnergyOverHour"
+        >
+          Показать график
+        </button>
+        <div
+          id="showGraphAverageEnergyOverHour-container"
+          style="width: 600px; height: 400px"
+        ></div>
+      </div>
+    </div>
 
     <script>
       function sendHello() {
