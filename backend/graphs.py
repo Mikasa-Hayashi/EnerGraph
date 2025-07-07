@@ -232,3 +232,76 @@ def plot_daily_energy_consumption(df):
                       margin=dict(l=0, r=0, t=105, b=0))
     fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>"
                                                      "Потребление: %{y}")
+
+
+def plot_temperature_energy_consumption(df, temperature_count):
+    temperature_columns = [f'T{i}' for i in range(1, temperature_count + 1)]
+    df['avg_temp'] = df[temperature_columns].mean(axis=1).round(1)
+    df['total_energy'] = df['Appliances'] + df['lights']
+
+    grouped = df.groupby('avg_temp')
+
+    mean_total = grouped['total_energy'].mean().round(0)
+    mean_appliances = grouped['Appliances'].mean().round(0)
+    mean_lights = grouped['lights'].mean().round(0)
+
+    fig = make_subplots(rows=2, cols=2,
+                        specs=[[{"rowspan": 2}, {}], [None, {}]],
+                        subplot_titles=("Общее энергопотребление", "Энергопотребление бытовых приборов",
+                                        "Энергопотребление света"))
+
+    fig.update_xaxes(title='Температура',
+                     range=[mean_total.index[-100], mean_total.index[-1] + 1],
+                     row=1,
+                     col=1)
+    fig.update_xaxes(title='Температура',
+                     range=[mean_appliances.index[-75], mean_total.index[-1] + 1],
+                     row=1,
+                     col=2)
+    fig.update_xaxes(title='Температура',
+                     range=[mean_lights.index[-75], mean_total.index[-1] + 1],
+                     row=2,
+                     col=2)
+    fig.update_yaxes(title='Энергопотребление',
+                     range=[min(mean_total.tail(100).values) - 50,
+                            max(mean_total.tail(100).values) + 50],
+                     zeroline=True,
+                     zerolinewidth=2,
+                     zerolinecolor='#902537',
+                     row=1,
+                     col=1)
+    fig.update_yaxes(title='Энергопотребление',
+                     range=[min(mean_appliances.tail(75).values) - 50,
+                            max(mean_appliances.tail(75).values) + 50],
+                     zeroline=True,
+                     zerolinewidth=2,
+                     zerolinecolor='#902537',
+                     row=1,
+                     col=2)
+    fig.update_yaxes(title='Энергопотребление',
+                     range=[min(mean_lights.tail(75).values) - 10,
+                            max(mean_lights.tail(75).values) + 10],
+                     zeroline=True,
+                     zerolinewidth=2,
+                     zerolinecolor='#902537',
+                     row=2,
+                     col=2)
+    fig.add_trace(go.Scatter(x=mean_total.index,
+                             y=mean_total.values,
+                             mode='lines+markers', name=''), 1, 1)
+    fig.add_trace(go.Scatter(x=mean_appliances.index,
+                             y=mean_appliances.values,
+                             mode='lines+markers', name=''), 1, 2)
+    fig.add_trace(go.Scatter(x=mean_lights.index,
+                             y=mean_lights.values,
+                             mode='lines+markers', name=''), 2, 2)
+    fig.update_layout(title=dict(text='Зависимость энергопотребления от температуры',
+                                 x=0.5,
+                                 xanchor='center',
+                                 yanchor='top',
+                                 font=dict(size=20)),
+                      legend_orientation="h",
+                      legend=dict(x=0.5, xanchor='center'),
+                      margin=dict(l=0, r=0, t=105, b=0))
+    fig.update_traces(hoverinfo="all", hovertemplate="Температура: %{x}<br>"
+                                                     "Потребление: %{y}")
