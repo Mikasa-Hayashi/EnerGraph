@@ -5,43 +5,12 @@ import pandas as pd
 
 
 
-def power_consumation_over_time():
-    pass
-
-
-def energy_dependence_from_temperature():
-    pass
-
-
-def energy_dependence_from_humidity():
-    pass
-
-
-def graph_4():
-    pass
-
-
-def graph_5():
-    pass
-
-
-def graph_6():
-    pass
-
-
-def graph_7():
-    pass
-
-
-def graph_8():
-    pass
-
-
-def graph_9():
-    pass
-
-
 def plot_total_energy_consumption(df):
+    """
+    1. НАЗВАНИЕ ГРАФИКА
+    :param df:
+    :return:
+    """
     fig = go.Figure()
     fig.update_xaxes(range=[df['date'].iloc[-145], df['date'].iloc[-1] + pd.Timedelta(hours=2)])
     fig.update_yaxes(range=[min(df['Appliances'].tail(145) + df['lights'].tail(145)) - 100,
@@ -57,8 +26,15 @@ def plot_total_energy_consumption(df):
     fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>"
                                                      "Потребление: %{y}")
 
+    return fig.to_plotly_json()
+
 
 def plot_appliances_and_lights_energy_consumption(df):
+    """
+    2. НАЗВАНИЕ ГРАФИКА
+    :param df:
+    :return:
+    """
     fig = make_subplots(rows=1, cols=2,
                         subplot_titles=("Энергопотребление бытовых приборов", "Энергопотребление света"))
     fig.update_xaxes(title='Дата', range=[df['date'].iloc[-75], df['date'].iloc[-1] + pd.Timedelta(hours=1)])
@@ -89,8 +65,16 @@ def plot_appliances_and_lights_energy_consumption(df):
     fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>"
                                                      "Потребление: %{y}")
 
+    return fig.to_plotly_json()
+
 
 def plot_hourly_energy_consumption(df):
+    """
+    3. НАЗВАНИЕ ГРАФИКА
+    :param df:
+    :return:
+    """
+
     df['total_energy'] = df['Appliances'] + df['lights']
 
     hourly_sum = df.resample('h', on='date')['total_energy'].sum().reset_index()
@@ -163,6 +147,11 @@ def plot_hourly_energy_consumption(df):
 
 
 def plot_daily_energy_consumption(df):
+    """
+    4. НАЗВАНИЕ ГРАФИКА
+    :param df:
+    :return:
+    """
     df['total_energy'] = df['Appliances'] + df['lights']
 
     daily_sum = df.resample('d', on='date')['total_energy'].sum().reset_index()
@@ -235,6 +224,12 @@ def plot_daily_energy_consumption(df):
 
 
 def plot_temperature_energy_consumption(df, temperature_count):
+    """
+    5. НАЗВАНИЕ ГРАФИКА
+    :param df:
+    :param temperature_count:
+    :return:
+    """
     temperature_columns = [f'T{i}' for i in range(1, temperature_count + 1)]
     df['avg_temp'] = df[temperature_columns].mean(axis=1).round(1)
     df['total_energy'] = df['Appliances'] + df['lights']
@@ -308,6 +303,12 @@ def plot_temperature_energy_consumption(df, temperature_count):
 
 
 def plot_humidity_energy_consumption(df, humidity_count):
+    """
+    6. НАЗВАНИЕ ГРАФИКА
+    :param df:
+    :param humidity_count:
+    :return:
+    """
     humidity_columns = [f'RH_{i}' for i in range(1, humidity_count + 1)]
     df['avg_humidity'] = df[humidity_columns].mean(axis=1).round(1)
     df['total_energy'] = df['Appliances'] + df['lights']
@@ -381,6 +382,12 @@ def plot_humidity_energy_consumption(df, humidity_count):
 
 
 def plot_temperature_diff_energy_consumption(df, temperature_count):
+    """
+    7. НАЗВАНИЕ ГРАФИКА
+    :param df:
+    :param temperature_count:
+    :return:
+    """
     temperature_columns = [f'T{i}' for i in range(1, temperature_count + 1)]
     df['temperature_diff'] = (df['T_out'] - df[temperature_columns].mean(axis=1)).round(1)
     df['total_energy'] = df['Appliances'] + df['lights']
@@ -456,6 +463,12 @@ def plot_temperature_diff_energy_consumption(df, temperature_count):
 
 
 def plot_humidity_diff_energy_consumption(df, humidity_count):
+    """
+    8. НАЗВАНИЕ ГРАФИКА
+    :param df:
+    :param humidity_count:
+    :return:
+    """
     humidity_columns = [f'RH_{i}' for i in range(1, humidity_count + 1)]
     df['humidity_diff'] = (df['RH_out'] - df[humidity_columns].mean(axis=1)).round(1)
     df['total_energy'] = df['Appliances'] + df['lights']
