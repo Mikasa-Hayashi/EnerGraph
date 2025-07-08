@@ -145,6 +145,8 @@ def plot_hourly_energy_consumption(df):
     fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>"
                                                      "Потребление: %{y}")
 
+    return fig.to_plotly_json()
+
 
 def plot_daily_energy_consumption(df):
     """
@@ -222,8 +224,10 @@ def plot_daily_energy_consumption(df):
     fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>"
                                                      "Потребление: %{y}")
 
+    return fig.to_plotly_json()
 
-def plot_temperature_energy_consumption(df, temperature_count):
+
+def plot_temperature_energy_consumption(df, temperature_count=9):
     """
     5. НАЗВАНИЕ ГРАФИКА
     :param df:
@@ -301,8 +305,10 @@ def plot_temperature_energy_consumption(df, temperature_count):
     fig.update_traces(hoverinfo="all", hovertemplate="Температура: %{x}<br>"
                                                      "Потребление: %{y}")
 
+    return fig.to_plotly_json()
 
-def plot_humidity_energy_consumption(df, humidity_count):
+
+def plot_humidity_energy_consumption(df, humidity_count=9):
     """
     6. НАЗВАНИЕ ГРАФИКА
     :param df:
@@ -380,8 +386,10 @@ def plot_humidity_energy_consumption(df, humidity_count):
     fig.update_traces(hoverinfo="all", hovertemplate="Влажность: %{x}<br>"
                                                      "Потребление: %{y}")
 
+    return fig.to_plotly_json()
 
-def plot_temperature_diff_energy_consumption(df, temperature_count):
+
+def plot_temperature_diff_energy_consumption(df, temperature_count=9):
     """
     7. НАЗВАНИЕ ГРАФИКА
     :param df:
@@ -461,8 +469,10 @@ def plot_temperature_diff_energy_consumption(df, temperature_count):
     fig.update_traces(hoverinfo="all", hovertemplate="Разность температур: %{x}<br>"
                                                      "Потребление: %{y}")
 
+    return fig.to_plotly_json()
 
-def plot_humidity_diff_energy_consumption(df, humidity_count):
+
+def plot_humidity_diff_energy_consumption(df, humidity_count=9):
     """
     8. НАЗВАНИЕ ГРАФИКА
     :param df:
@@ -541,3 +551,5 @@ def plot_humidity_diff_energy_consumption(df, humidity_count):
                       margin=dict(l=0, r=0, t=105, b=0))
     fig.update_traces(hoverinfo="all", hovertemplate="Разность влажности: %{x}<br>"
                                                      "Потребление: %{y}")
+
+    return fig.to_plotly_json()

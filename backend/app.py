@@ -10,6 +10,7 @@ import plotly .graph_objs as go
 import plotly
 import json
 
+df = None
 
 UPLOAD_FOLDER = 'backend/datasets'
 
@@ -39,6 +40,7 @@ def load_file():
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
 
+        global df
         df = load_data(filepath)
 
         print(validate_data(df))
@@ -54,65 +56,69 @@ def load_file():
     return render_template('index.html')
 
 
+'''
+GRAPH PART
+'''
+
+from . import graphs
+
 @app.route('/graph_1', methods=['POST'])
 def graph_1():
-    # df = load_data()
-
-    # df = load_data()
-    # graph_html = build_graph(df)
-    # trace = go.Scatter(x='Appliances', y='T1')
-    # fig = go.Figure(data=[trace])
-    # graphJSON = fig.to_plotly_json()
-    # # return render_template('index.html', graph=graph_html)
-    # return jsonify(graphJSON)
-    x = [1, 2, 3, 4, 5]
-    y = [10, 15, 13, 17, 14]
-    # print(list(df['Appliances']))
-    trace = go.Scatter(x=x, y=y, mode='lines+markers', name='Потребление')
-    layout = go.Layout(title='График потребления электроэнергии')
-
-    fig = go.Figure(data=[trace], layout=layout)
-
-    graphJSON = fig.to_plotly_json()
-
-    return jsonify(graphJSON)
+    json_graph = graphs.plot_total_energy_consumption(df)
+    return jsonify(json_graph)
 
 
 @app.route('/graph_2', methods=['POST'])
 def graph_2():
-    pass
+    json_graph = graphs.plot_appliances_and_lights_energy_consumption(df)
+    print(json_graph)
+    return jsonify(json_graph)
 
 
 @app.route('/graph_3', methods=['POST'])
 def graph_3():
-    pass
+    json_graph = graphs.plot_hourly_energy_consumption(df)
+    print(json_graph)
+    return jsonify(json_graph)
 
 
 @app.route('/graph_4', methods=['POST'])
 def graph_4():
-    pass
+    json_graph = graphs.plot_daily_energy_consumption(df)
+    print(json_graph)
+    return jsonify(json_graph)
 
 
 @app.route('/graph_5', methods=['POST'])
 def graph_5():
-    pass
+    json_graph = graphs.plot_temperature_energy_consumption(df)
+    print(json_graph)
+    return jsonify(json_graph)
 
 
 @app.route('/graph_6', methods=['POST'])
 def graph_6():
-    pass
+    json_graph = graphs.plot_humidity_energy_consumption(df)
+    print(json_graph)
+    return jsonify(json_graph)
 
 
 @app.route('/graph_7', methods=['POST'])
 def graph_7():
-    pass
+    json_graph = graphs.plot_temperature_diff_energy_consumption(df)
+    print(json_graph)
+    return jsonify(json_graph)
 
 
 @app.route('/graph_8', methods=['POST'])
 def graph_8():
-    pass
+    json_graph = graphs.plot_humidity_diff_energy_consumption(df)
+    print(json_graph)
+    return jsonify(json_graph)
 
 
-@app.route('/graph_9', methods=['POST'])
-def graph_9():
-    pass
+# @app.route('/graph_9', methods=['POST'])
+# def graph_9():
+#     json_graph = graphs.plot_humidity_diff_energy_consumption(df)
+#     print(json_graph)
+#     return jsonify(json_graph)
