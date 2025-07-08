@@ -18,7 +18,7 @@ def plot_total_energy_consumption(df):
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537')
-    fig.add_trace(go.Scatter(x=df['date'], y=(df['Appliances'] + df['lights']), mode='lines+markers', name=''))
+    fig.add_trace(go.Scatter(x=df['date'].tolist(), y=(df['Appliances'] + df['lights']).tolist(), mode='lines+markers', name=''))
     fig.update_layout(title='Энергопотребление приборов',
                       xaxis_title='Дата',
                       yaxis_title='Энергопотребление',
@@ -52,8 +52,8 @@ def plot_appliances_and_lights_energy_consumption(df):
                      zerolinewidth=2,
                      zerolinecolor='#902537',
                      col=2)
-    fig.add_trace(go.Scatter(x=df['date'], y=df['Appliances'], mode='lines+markers', name=''), 1, 1)
-    fig.add_trace(go.Scatter(x=df['date'], y=df['lights'], mode='lines+markers', name=''), 1, 2)
+    fig.add_trace(go.Scatter(x=df['date'].tolist(), y=df['Appliances'].tolist(), mode='lines+markers', name=''), 1, 1)
+    fig.add_trace(go.Scatter(x=df['date'].tolist(), y=df['lights'].tolist(), mode='lines+markers', name=''), 1, 2)
     fig.update_layout(title=dict(text='Энергопотребление приборов (раздельно)',
                                  x=0.5,
                                  xanchor='center',
@@ -125,14 +125,14 @@ def plot_hourly_energy_consumption(df):
                      zerolinecolor='#902537',
                      row=2,
                      col=2)
-    fig.add_trace(go.Scatter(x=hourly_sum['date'],
-                             y=hourly_sum['total_energy'],
+    fig.add_trace(go.Scatter(x=hourly_sum['date'].tolist(),
+                             y=hourly_sum['total_energy'].tolist(),
                              mode='lines+markers', name=''), 1, 1)
-    fig.add_trace(go.Scatter(x=hourly_appliances['date'],
-                             y=hourly_appliances['Appliances'],
+    fig.add_trace(go.Scatter(x=hourly_appliances['date'].tolist(),
+                             y=hourly_appliances['Appliances'].tolist(),
                              mode='lines+markers', name=''), 1, 2)
-    fig.add_trace(go.Scatter(x=hourly_lights['date'],
-                             y=hourly_lights['lights'],
+    fig.add_trace(go.Scatter(x=hourly_lights['date'].tolist(),
+                             y=hourly_lights['lights'].tolist(),
                              mode='lines+markers', name=''), 2, 2)
     fig.update_layout(title=dict(text='Почасовое энергопотребление приборов',
                                  x=0.5,
@@ -204,14 +204,14 @@ def plot_daily_energy_consumption(df):
                      zerolinecolor='#902537',
                      row=2,
                      col=2)
-    fig.add_trace(go.Scatter(x=daily_sum['date'],
-                             y=daily_sum['total_energy'],
+    fig.add_trace(go.Scatter(x=daily_sum['date'].tolist(),
+                             y=daily_sum['total_energy'].tolist(),
                              mode='lines+markers', name=''), 1, 1)
-    fig.add_trace(go.Scatter(x=daily_appliances['date'],
-                             y=daily_appliances['Appliances'],
+    fig.add_trace(go.Scatter(x=daily_appliances['date'].tolist(),
+                             y=daily_appliances['Appliances'].tolist(),
                              mode='lines+markers', name=''), 1, 2)
-    fig.add_trace(go.Scatter(x=daily_lights['date'],
-                             y=daily_lights['lights'],
+    fig.add_trace(go.Scatter(x=daily_lights['date'].tolist(),
+                             y=daily_lights['lights'].tolist(),
                              mode='lines+markers', name=''), 2, 2)
     fig.update_layout(title=dict(text='Почасовое энергопотребление приборов',
                                  x=0.5,
@@ -285,14 +285,14 @@ def plot_temperature_energy_consumption(df, temperature_count=9):
                      zerolinecolor='#902537',
                      row=2,
                      col=2)
-    fig.add_trace(go.Scatter(x=mean_total.index,
-                             y=mean_total.values,
+    fig.add_trace(go.Scatter(x=mean_total.index.tolist(),
+                             y=mean_total.values.tolist(),
                              mode='lines+markers', name=''), 1, 1)
-    fig.add_trace(go.Scatter(x=mean_appliances.index,
-                             y=mean_appliances.values,
+    fig.add_trace(go.Scatter(x=mean_appliances.index.tolist(),
+                             y=mean_appliances.values.tolist(),
                              mode='lines+markers', name=''), 1, 2)
-    fig.add_trace(go.Scatter(x=mean_lights.index,
-                             y=mean_lights.values,
+    fig.add_trace(go.Scatter(x=mean_lights.index.tolist(),
+                             y=mean_lights.values.tolist(),
                              mode='lines+markers', name=''), 2, 2)
     fig.update_layout(title=dict(text='Зависимость энергопотребления от температуры',
                                  x=0.5,
@@ -304,7 +304,9 @@ def plot_temperature_energy_consumption(df, temperature_count=9):
                       margin=dict(l=0, r=0, t=105, b=0))
     fig.update_traces(hoverinfo="all", hovertemplate="Температура: %{x}<br>"
                                                      "Потребление: %{y}")
-
+    # print(fig)
+    # print('-' * 100)
+    # fig.show()
     return fig.to_plotly_json()
 
 
@@ -366,14 +368,14 @@ def plot_humidity_energy_consumption(df, humidity_count=9):
                      zerolinecolor='#902537',
                      row=2,
                      col=2)
-    fig.add_trace(go.Scatter(x=mean_total.index,
-                             y=mean_total.values,
+    fig.add_trace(go.Scatter(x=mean_total.index.tolist(),
+                             y=mean_total.values.tolist(),
                              mode='lines+markers', name=''), 1, 1)
-    fig.add_trace(go.Scatter(x=mean_appliances.index,
-                             y=mean_appliances.values,
+    fig.add_trace(go.Scatter(x=mean_appliances.index.tolist(),
+                             y=mean_appliances.values.tolist(),
                              mode='lines+markers', name=''), 1, 2)
-    fig.add_trace(go.Scatter(x=mean_lights.index,
-                             y=mean_lights.values,
+    fig.add_trace(go.Scatter(x=mean_lights.index.tolist(),
+                             y=mean_lights.values.tolist(),
                              mode='lines+markers', name=''), 2, 2)
     fig.update_layout(title=dict(text='Зависимость энергопотребления от влажности',
                                  x=0.5,
@@ -449,14 +451,14 @@ def plot_temperature_diff_energy_consumption(df, temperature_count=9):
                      zerolinecolor='#902537',
                      row=2,
                      col=2)
-    fig.add_trace(go.Scatter(x=mean_total.index,
-                             y=mean_total.values,
+    fig.add_trace(go.Scatter(x=mean_total.index.tolist(),
+                             y=mean_total.values.tolist(),
                              mode='lines+markers', name=''), 1, 1)
-    fig.add_trace(go.Scatter(x=mean_appliances.index,
-                             y=mean_appliances.values,
+    fig.add_trace(go.Scatter(x=mean_appliances.index.tolist(),
+                             y=mean_appliances.values.tolist(),
                              mode='lines+markers', name=''), 1, 2)
-    fig.add_trace(go.Scatter(x=mean_lights.index,
-                             y=mean_lights.values,
+    fig.add_trace(go.Scatter(x=mean_lights.index.tolist(),
+                             y=mean_lights.values.tolist(),
                              mode='lines+markers', name=''), 2, 2)
     fig.update_layout(title=dict(text='Зависимость энергопотребления от разности температуры снаружи и внутри дома',
                                  x=0.5,
@@ -532,14 +534,14 @@ def plot_humidity_diff_energy_consumption(df, humidity_count=9):
                      zerolinecolor='#902537',
                      row=2,
                      col=2)
-    fig.add_trace(go.Scatter(x=mean_total.index,
-                             y=mean_total.values,
+    fig.add_trace(go.Scatter(x=mean_total.index.tolist(),
+                             y=mean_total.values.tolist(),
                              mode='lines+markers', name=''), 1, 1)
-    fig.add_trace(go.Scatter(x=mean_appliances.index,
-                             y=mean_appliances.values,
+    fig.add_trace(go.Scatter(x=mean_appliances.index.tolist(),
+                             y=mean_appliances.values.tolist(),
                              mode='lines+markers', name=''), 1, 2)
-    fig.add_trace(go.Scatter(x=mean_lights.index,
-                             y=mean_lights.values,
+    fig.add_trace(go.Scatter(x=mean_lights.index.tolist(),
+                             y=mean_lights.values.tolist(),
                              mode='lines+markers', name=''), 2, 2)
     fig.update_layout(title=dict(text='Зависимость энергопотребления от разности влажности снаружи и внутри дома',
                                  x=0.5,

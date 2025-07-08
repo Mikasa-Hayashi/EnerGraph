@@ -64,57 +64,50 @@ from . import graphs
 
 @app.route('/graph_1', methods=['POST'])
 def graph_1():
-    json_graph = graphs.plot_total_energy_consumption(df)
-    return jsonify(json_graph)
+    plot_json = graphs.plot_total_energy_consumption(df)
+    return jsonify(plot_json)
 
 
 @app.route('/graph_2', methods=['POST'])
 def graph_2():
-    json_graph = graphs.plot_appliances_and_lights_energy_consumption(df)
-    print(json_graph)
-    return jsonify(json_graph)
+    plot_json = graphs.plot_appliances_and_lights_energy_consumption(df)
+    return jsonify(plot_json)
 
 
 @app.route('/graph_3', methods=['POST'])
 def graph_3():
-    json_graph = graphs.plot_hourly_energy_consumption(df)
-    print(json_graph)
-    return jsonify(json_graph)
+    plot_json = graphs.plot_hourly_energy_consumption(df)
+    return jsonify(plot_json)
 
 
 @app.route('/graph_4', methods=['POST'])
 def graph_4():
-    json_graph = graphs.plot_daily_energy_consumption(df)
-    print(json_graph)
-    return jsonify(json_graph)
+    plot_json = graphs.plot_daily_energy_consumption(df)
+    return jsonify(plot_json)
 
 
 @app.route('/graph_5', methods=['POST'])
 def graph_5():
-    json_graph = graphs.plot_temperature_energy_consumption(df)
-    print(json_graph)
-    return jsonify(json_graph)
+    plot_json = graphs.plot_temperature_energy_consumption(df)
+    return jsonify(plot_json)
 
 
 @app.route('/graph_6', methods=['POST'])
 def graph_6():
-    json_graph = graphs.plot_humidity_energy_consumption(df)
-    print(json_graph)
-    return jsonify(json_graph)
+    plot_json = graphs.plot_humidity_energy_consumption(df)
+    return jsonify(plot_json)
 
 
 @app.route('/graph_7', methods=['POST'])
 def graph_7():
-    json_graph = graphs.plot_temperature_diff_energy_consumption(df)
-    print(json_graph)
-    return jsonify(json_graph)
+    plot_json = graphs.plot_temperature_diff_energy_consumption(df)
+    return jsonify(plot_json)
 
 
 @app.route('/graph_8', methods=['POST'])
 def graph_8():
-    json_graph = graphs.plot_humidity_diff_energy_consumption(df)
-    print(json_graph)
-    return jsonify(json_graph)
+    plot_json = graphs.plot_humidity_diff_energy_consumption(df)
+    return jsonify(plot_json)
 
 
 # @app.route('/graph_9', methods=['POST'])
