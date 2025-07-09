@@ -104,16 +104,33 @@ def plot_appliances_and_lights_energy_consumption(df):
 
 def plot_hourly_energy_consumption(df):
     """
-    3. НАЗВАНИЕ ГРАФИКА
-    :param df:
-    :return:
+    3. График почасового энергопотребления
+    :param df: DataFrame с данными
+    :return: JSON-представление графика
     """
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
 
-    df['total_energy'] = df['Appliances'] + df['lights']
+    if len(df_clean) == 0:
+        raise ValueError("Нет данных для построения графика после удаления NaN.")
 
-    hourly_sum = df.resample('h', on='date')['total_energy'].sum().reset_index()
-    hourly_appliances = df.resample('h', on='date')['Appliances'].sum().reset_index()
-    hourly_lights = df.resample('h', on='date')['lights'].sum().reset_index()
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+
+    hourly_sum = df_clean.resample('h', on='date')['total_energy'].sum().reset_index()
+    hourly_appliances = df_clean.resample('h', on='date')['Appliances'].sum().reset_index()
+    hourly_lights = df_clean.resample('h', on='date')['lights'].sum().reset_index()
+
+    date_list = [str(d) for d in hourly_sum['date'].tolist()]
+
+    hourly_sum_list = hourly_sum['total_energy'].tolist()
+    hourly_appliances_list = hourly_appliances['Appliances'].tolist()
+    hourly_lights_list = hourly_lights['lights'].tolist()
+    last_n_sum = min(len(date_list), 75)
+    last_n_other = min(len(date_list), 50)
+
+    last_date = parse(date_list[-1])
+    new_end_date = last_date + timedelta(hours=4)
+    new_end_date_str = new_end_date.strftime('%Y-%m-%d %H:%M:%S')
 
     fig = make_subplots(rows=2, cols=2,
                         specs=[[{"rowspan": 2}, {}], [None, {}]],
@@ -121,52 +138,52 @@ def plot_hourly_energy_consumption(df):
                                         "Энергопотребление света"))
 
     fig.update_xaxes(title='Дата',
-                     range=[hourly_sum['date'].iloc[-75],
-                            hourly_sum['date'].iloc[-1] + pd.Timedelta(hours=4)],
+                     range=[date_list[-last_n_sum],
+                            new_end_date_str],
                      row=1,
                      col=1)
     fig.update_xaxes(title='Дата',
-                     range=[hourly_appliances['date'].iloc[-50],
-                            hourly_appliances['date'].iloc[-1] + pd.Timedelta(hours=4)],
+                     range=[date_list[-last_n_other],
+                            new_end_date_str],
                      row=1,
                      col=2)
     fig.update_xaxes(title='Дата',
-                     range=[hourly_lights['date'].iloc[-50],
-                            hourly_lights['date'].iloc[-1] + pd.Timedelta(hours=4)],
+                     range=[date_list[-last_n_other],
+                            new_end_date_str],
                      row=2,
                      col=2)
     fig.update_yaxes(title='Энергопотребление',
-                     range=[min(hourly_sum['total_energy'].tail(75)) - 300,
-                            max(hourly_sum['total_energy'].tail(75)) + 300],
+                     range=[min(hourly_sum_list[-last_n_sum:]) - 300,
+                            max(hourly_sum_list[-last_n_sum:]) + 300],
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537',
                      row=1,
                      col=1)
     fig.update_yaxes(title='Энергопотребление',
-                     range=[min(hourly_appliances['Appliances'].tail(50)) - 300,
-                            max(hourly_appliances['Appliances'].tail(50)) + 300],
+                     range=[min(hourly_appliances_list[-last_n_other:]) - 300,
+                            max(hourly_appliances_list[-last_n_other:]) + 300],
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537',
                      row=1,
                      col=2)
     fig.update_yaxes(title='Энергопотребление',
-                     range=[min(hourly_lights['lights'].tail(50)) - 30,
-                            max(hourly_lights['lights'].tail(50)) + 30],
+                     range=[min(hourly_lights_list[-last_n_other:]) - 30,
+                            max(hourly_lights_list[-last_n_other:]) + 30],
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537',
                      row=2,
                      col=2)
-    fig.add_trace(go.Scatter(x=hourly_sum['date'].tolist(),
-                             y=hourly_sum['total_energy'].tolist(),
+    fig.add_trace(go.Scatter(x=date_list,
+                             y=hourly_sum_list,
                              mode='lines+markers', name=''), 1, 1)
-    fig.add_trace(go.Scatter(x=hourly_appliances['date'].tolist(),
-                             y=hourly_appliances['Appliances'].tolist(),
+    fig.add_trace(go.Scatter(x=date_list,
+                             y=hourly_appliances_list,
                              mode='lines+markers', name=''), 1, 2)
-    fig.add_trace(go.Scatter(x=hourly_lights['date'].tolist(),
-                             y=hourly_lights['lights'].tolist(),
+    fig.add_trace(go.Scatter(x=date_list,
+                             y=hourly_lights_list,
                              mode='lines+markers', name=''), 2, 2)
     fig.update_layout(title=dict(text='Почасовое энергопотребление приборов',
                                  x=0.5,
