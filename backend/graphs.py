@@ -84,8 +84,8 @@ def plot_appliances_and_lights_energy_consumption(df):
                      zerolinecolor='#902537',
                      col=1)
     fig.update_yaxes(title='Энергопотребление',
-                     range=[min(lights_list[-last_n:]) - 50,
-                            max(lights_list[-last_n:]) + 50],
+                     range=[min(lights_list[-last_n:]) - 20,
+                            max(lights_list[-last_n:]) + 20],
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537',
@@ -682,8 +682,8 @@ def histogram_average_hourly_consumption(df):
 
     hours_list = avg_energy['hour'].tolist()
     mean_total_list = avg_energy['total_energy'].tolist()
-    mean_appliances = avg_energy['Appliances'].tolist()
-    mean_lights = avg_energy['lights'].tolist()
+    mean_appliances_list = avg_energy['Appliances'].tolist()
+    mean_lights_list = avg_energy['lights'].tolist()
 
 
     fig = go.Figure()
@@ -697,14 +697,14 @@ def histogram_average_hourly_consumption(df):
 
     fig.add_trace(go.Bar(
         x=hours_list,
-        y=mean_appliances,
+        y=mean_appliances_list,
         name='Бытовая техника',
         marker_color='#ff7f0e'
     ))
 
     fig.add_trace(go.Bar(
         x=hours_list,
-        y=mean_lights,
+        y=mean_lights_list,
         name='Освещение',
         marker_color='#2ca02c'
     ))
@@ -716,7 +716,7 @@ def histogram_average_hourly_consumption(df):
     )
 
     fig.update_yaxes(
-        title_text='Потребление',
+        title_text='Энергопотребление',
         rangemode='tozero'
     )
 
@@ -738,8 +738,93 @@ def histogram_average_hourly_consumption(df):
     return fig.to_plotly_json()
 
 
-def diagram_average_weekday_consumption(df):
-    pass
+def histogram_average_weekly_consumption(df):
+    """
+    Гистограмма среднего энергопотребления по дням недели
+    :param df: DataFrame с данными
+    :return: JSON-представление графика
+    """
+    days_ru = {
+        'Monday': 'Понедельник',
+        'Tuesday': 'Вторник',
+        'Wednesday': 'Среда',
+        'Thursday': 'Четверг',
+        'Friday': 'Пятница',
+        'Saturday': 'Суббота',
+        'Sunday': 'Воскресенье'
+    }
+
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    if len(df_clean) == 0:
+        raise ValueError("Нет данных для построения графика после удаления NaN.")
+
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+    df_clean['day_of_week'] = df_clean['date'].dt.day_name()
+    df_clean['day_num'] = df_clean['date'].dt.dayofweek
+
+    weekly_avg = df_clean.groupby(['day_num', 'day_of_week'], as_index=False)[
+        ['total_energy', 'Appliances', 'lights']].mean().round(2)
+
+    weekly_avg = weekly_avg.sort_values('day_num')
+    weekly_avg['day_of_week_ru'] = weekly_avg['day_of_week'].map(days_ru)
+
+    days_list = weekly_avg['day_of_week_ru'].tolist()
+    mean_total_list = weekly_avg['total_energy'].tolist()
+    mean_appliances_list = weekly_avg['Appliances'].tolist()
+    mean_lights_list = weekly_avg['lights'].tolist()
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=days_list,
+        y=mean_total_list,
+        name='Общее потребление',
+        marker_color='#1f77b4'
+    ))
+
+    fig.add_trace(go.Bar(
+        x=days_list,
+        y=mean_appliances_list,
+        name='Бытовая техника',
+        marker_color='#ff7f0e'
+    ))
+
+    fig.add_trace(go.Bar(
+        x=days_list,
+        y=mean_lights_list,
+        name='Освещение',
+        marker_color='#2ca02c'
+    ))
+
+    fig.update_xaxes(
+        title_text='День недели',
+        categoryorder='array',
+        categoryarray=days_list
+    )
+
+    fig.update_yaxes(
+        title_text='Энергопотребление',
+        rangemode='tozero'
+    )
+
+    fig.update_layout(
+        title=dict(text='Среднее энергопотребление по дням недели',
+                   x=0.5,
+                   xanchor='center',
+                   yanchor='top',
+                   font=dict(size=20)),
+        barmode='group',
+        bargap=0.15,
+        bargroupgap=0.1,
+        hovermode='x unified',
+        legend_orientation="h",
+        legend=dict(x=0.5, xanchor='center'),
+        margin=dict(l=0, r=0, t=65, b=0)
+    )
+
+    return fig.to_plotly_json()
 
 
 def plot_weekday_hourly_consumption(df):

@@ -117,6 +117,12 @@ def graph_9():
     return jsonify(plot_json)
 
 
+@app.route('/graph_10', methods=['POST'])
+def graph_10():
+    plot_json = graphs.histogram_average_weekly_consumption(df)
+    return jsonify(plot_json)
+
+
 '''
 ANAL PART
 '''
