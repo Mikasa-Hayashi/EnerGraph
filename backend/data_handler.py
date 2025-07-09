@@ -111,7 +111,3 @@ def validate_data(df):
     #     return False
 
     return True
-
-
-def clear_data(df):
-    pass
