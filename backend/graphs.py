@@ -2,23 +2,42 @@ import plotly .graph_objs as go
 from plotly.subplots import make_subplots
 import plotly
 import pandas as pd
-
+from datetime import datetime, timedelta
+from dateutil.parser import parse
 
 
 def plot_total_energy_consumption(df):
     """
-    1. НАЗВАНИЕ ГРАФИКА
-    :param df:
-    :return:
+    График энергопотребления приборов
+    :param df: DataFrame с данными
+    :return: JSON-представление графика
     """
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    if len(df_clean) == 0:
+        raise ValueError("Нет данных для построения графика после удаления NaN.")
+
+    date_list = [str(d) for d in df_clean['date'].tolist()]
+    total_energy_list = (df_clean['Appliances'] + df_clean['lights']).tolist()
+    last_n = min(len(date_list), 145)
+
+    last_date = parse(date_list[-1])
+    new_end_date = last_date + timedelta(hours=2)
+    new_end_date_str = new_end_date.strftime('%Y-%m-%d %H:%M:%S')
+
     fig = go.Figure()
-    fig.update_xaxes(range=[df['date'].iloc[-145], df['date'].iloc[-1] + pd.Timedelta(hours=2)])
-    fig.update_yaxes(range=[min(df['Appliances'].tail(145) + df['lights'].tail(145)) - 100,
-                            max(df['Appliances'].tail(145) + df['lights'].tail(145)) + 100],
+
+    fig.update_xaxes(range=[date_list[-last_n], new_end_date_str],
+                     autorange=False,
+                     type='date')
+    fig.update_yaxes(range=[min(total_energy_list[-last_n:]) - 100,
+                            max(total_energy_list[-last_n:]) + 100],
                      zeroline=True,
                      zerolinewidth=2,
-                     zerolinecolor='#902537')
-    fig.add_trace(go.Scatter(x=df['date'].tolist(), y=(df['Appliances'] + df['lights']).tolist(), mode='lines+markers', name=''))
+                     zerolinecolor='#902537',
+                     autorange=False)
+    fig.add_trace(go.Scatter(x=date_list, y=total_energy_list, mode='lines+markers', name=''))
     fig.update_layout(title='Энергопотребление приборов',
                       xaxis_title='Дата',
                       yaxis_title='Энергопотребление',
