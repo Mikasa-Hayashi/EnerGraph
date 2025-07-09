@@ -298,10 +298,10 @@ def plot_daily_energy_consumption(df):
 
 def plot_temperature_energy_consumption(df, temperature_count=9):
     """
-    5. НАЗВАНИЕ ГРАФИКА
-    :param df:
-    :param temperature_count:
-    :return:
+    5. График зависимости энергопотребления от средней температуры в доме
+    :param df: DataFrame с данными
+    :param temperature_count: кол-во датчиков температуры в доме
+    :return: JSON-представление графика
     """
     temperature_columns = [f'T{i}' for i in range(1, temperature_count + 1)]
 
@@ -388,20 +388,30 @@ def plot_temperature_energy_consumption(df, temperature_count=9):
 
 def plot_humidity_energy_consumption(df, humidity_count=9):
     """
-    6. НАЗВАНИЕ ГРАФИКА
-    :param df:
-    :param humidity_count:
-    :return:
+    6. График зависимости энергопотребления от средней влажности в доме
+    :param df: DataFrame с данными
+    :param humidity_count: кол-во датчиков влажности в доме
+    :return: JSON-представление графика
     """
     humidity_columns = [f'RH_{i}' for i in range(1, humidity_count + 1)]
-    df['avg_humidity'] = df[humidity_columns].mean(axis=1).round(1)
-    df['total_energy'] = df['Appliances'] + df['lights']
 
-    grouped = df.groupby('avg_humidity')
+    all_columns = humidity_columns + ['Appliances', 'lights']
+    df_clean = df.dropna(subset=all_columns).copy()
+
+    if len(df_clean) == 0:
+        raise ValueError("Нет данных для построения графика после удаления NaN.")
+
+    df_clean['avg_humidity'] = df_clean[humidity_columns].mean(axis=1).round(1)
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+
+    grouped = df_clean.groupby('avg_humidity')
 
     mean_total = grouped['total_energy'].mean().round(0)
     mean_appliances = grouped['Appliances'].mean().round(0)
     mean_lights = grouped['lights'].mean().round(0)
+
+    last_n_sum = min(len(df_clean), 100)
+    last_n_other = min(len(df_clean), 75)
 
     fig = make_subplots(rows=2, cols=2,
                         specs=[[{"rowspan": 2}, {}], [None, {}]],
@@ -409,36 +419,36 @@ def plot_humidity_energy_consumption(df, humidity_count=9):
                                         "Энергопотребление света"))
 
     fig.update_xaxes(title='Влажность',
-                     range=[mean_total.index[-100], mean_total.index[-1] + 1],
+                     range=[mean_total.index[-last_n_sum], mean_total.index[-1] + 1],
                      row=1,
                      col=1)
     fig.update_xaxes(title='Влажность',
-                     range=[mean_appliances.index[-75], mean_total.index[-1] + 1],
+                     range=[mean_appliances.index[-last_n_other], mean_total.index[-1] + 1],
                      row=1,
                      col=2)
     fig.update_xaxes(title='Влажность',
-                     range=[mean_lights.index[-75], mean_total.index[-1] + 1],
+                     range=[mean_lights.index[-last_n_other], mean_total.index[-1] + 1],
                      row=2,
                      col=2)
     fig.update_yaxes(title='Энергопотребление',
-                     range=[min(mean_total.tail(100).values) - 50,
-                            max(mean_total.tail(100).values) + 50],
+                     range=[min(mean_total.tail(last_n_sum).values) - 50,
+                            max(mean_total.tail(last_n_sum).values) + 50],
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537',
                      row=1,
                      col=1)
     fig.update_yaxes(title='Энергопотребление',
-                     range=[min(mean_appliances.tail(75).values) - 50,
-                            max(mean_appliances.tail(75).values) + 50],
+                     range=[min(mean_appliances.tail(last_n_other).values) - 50,
+                            max(mean_appliances.tail(last_n_other).values) + 50],
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537',
                      row=1,
                      col=2)
     fig.update_yaxes(title='Энергопотребление',
-                     range=[min(mean_lights.tail(75).values) - 10,
-                            max(mean_lights.tail(75).values) + 10],
+                     range=[min(mean_lights.tail(last_n_other).values) - 10,
+                            max(mean_lights.tail(last_n_other).values) + 10],
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537',
