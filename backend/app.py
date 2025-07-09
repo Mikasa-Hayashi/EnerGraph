@@ -6,7 +6,7 @@ from flask import Flask, render_template, jsonify, flash, request, url_for
 from werkzeug.utils import secure_filename
 
 # from .data_handler import load_data, build_graph
-from .data_handler import validate_data, clear_data, load_data
+from .data_handler import validate_data, load_data
 import plotly .graph_objs as go
 import plotly
 import json
