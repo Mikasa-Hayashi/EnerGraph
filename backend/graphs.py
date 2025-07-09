@@ -8,7 +8,7 @@ from dateutil.parser import parse
 
 def plot_total_energy_consumption(df):
     """
-    График энергопотребления приборов
+    График энергопотребления всех приборов
     :param df: DataFrame с данными
     :return: JSON-представление графика
     """
@@ -50,29 +50,44 @@ def plot_total_energy_consumption(df):
 
 def plot_appliances_and_lights_energy_consumption(df):
     """
-    2. НАЗВАНИЕ ГРАФИКА
-    :param df:
-    :return:
+    2. График энергопотребления бытовых приборов и света (раздельно)
+    :param df: DataFrame с данными
+    :return: JSON-представление графика
     """
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    if len(df_clean) == 0:
+        raise ValueError("Нет данных для построения графика после удаления NaN.")
+
+    date_list = [str(d) for d in df_clean['date'].tolist()]
+    appliances_list = df_clean['Appliances'].tolist()
+    lights_list = df_clean['lights'].tolist()
+    last_n = min(len(date_list), 75)
+
+    last_date = parse(date_list[-1])
+    new_end_date = last_date + timedelta(hours=1)
+    new_end_date_str = new_end_date.strftime('%Y-%m-%d %H:%M:%S')
+
     fig = make_subplots(rows=1, cols=2,
                         subplot_titles=("Энергопотребление бытовых приборов", "Энергопотребление света"))
-    fig.update_xaxes(title='Дата', range=[df['date'].iloc[-75], df['date'].iloc[-1] + pd.Timedelta(hours=1)])
+    fig.update_xaxes(title='Дата', range=[date_list[-last_n], new_end_date_str])
     fig.update_yaxes(title='Энергопотребление',
-                     range=[min(df['Appliances'].tail(75)) - 50,
-                            max(df['Appliances'].tail(75)) + 50],
+                     range=[min(appliances_list[-last_n:]) - 50,
+                            max(appliances_list[-last_n:]) + 50],
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537',
                      col=1)
     fig.update_yaxes(title='Энергопотребление',
-                     range=[min(df['lights'].tail(75)) - 50,
-                            max(df['lights'].tail(75)) + 50],
+                     range=[min(lights_list[-last_n:]) - 50,
+                            max(lights_list[-last_n:]) + 50],
                      zeroline=True,
                      zerolinewidth=2,
                      zerolinecolor='#902537',
                      col=2)
-    fig.add_trace(go.Scatter(x=df['date'].tolist(), y=df['Appliances'].tolist(), mode='lines+markers', name=''), 1, 1)
-    fig.add_trace(go.Scatter(x=df['date'].tolist(), y=df['lights'].tolist(), mode='lines+markers', name=''), 1, 2)
+    fig.add_trace(go.Scatter(x=date_list, y=appliances_list, mode='lines+markers', name=''), 1, 1)
+    fig.add_trace(go.Scatter(x=date_list, y=lights_list, mode='lines+markers', name=''), 1, 2)
     fig.update_layout(title=dict(text='Энергопотребление приборов (раздельно)',
                                  x=0.5,
                                  xanchor='center',
