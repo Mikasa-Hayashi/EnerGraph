@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 
 from Scripts.bottle import redirect
 from flask import Flask, render_template, jsonify, flash, request, url_for
@@ -110,6 +111,77 @@ def graph_8():
     return jsonify(plot_json)
 
 
+'''
+ANAL PART
+'''
+
+@app.route('/anal_1', methods=['POST'])
+def anal_1():
+    data = {}
+
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+
+    max_val = df_clean['total_energy'].max()
+    min_val = df_clean['total_energy'].min()
+    mean_val = df_clean['total_energy'].mean()
+
+    max_time = df_clean.loc[df_clean['total_energy'].idxmax(), 'date']
+    min_time = df_clean.loc[df_clean['total_energy'].idxmin(), 'date']
+
+    out = (
+        f"Максимальное значение энергопотребления достигается {max_time.strftime('%d.%m.%Y %H:%M')} "
+        f"и равно: {max_val:.2f} кВт\n"
+        f"Минимальное значение энергопотребления достигается {min_time.strftime('%d.%m.%Y %H:%M')} "
+        f"и равно: {min_val:.2f} кВт\n"
+        f"Среднее значение энергопотребления за весь период: {mean_val:.2f} кВт"
+    )
+
+    data['anal'] = out
+    return data
+
+
+@app.route('/anal_2', methods=['POST'])
+def anal_2():
+    data = None
+    return jsonify(data)
+
+
+@app.route('/anal_3', methods=['POST'])
+def anal_3():
+    data = None
+    return jsonify(data)
+
+
+@app.route('/anal_4', methods=['POST'])
+def anal_4():
+    data = None
+    return jsonify(data)
+
+
+@app.route('/anal_5', methods=['POST'])
+def anal_5():
+    data = None
+    return jsonify(data)
+
+
+@app.route('/anal_6', methods=['POST'])
+def anal_6():
+    data = None
+    return jsonify(data)
+
+
+@app.route('/anal_7', methods=['POST'])
+def anal_7():
+    data = None
+    return jsonify(data)
+
+
+@app.route('/anal_8', methods=['POST'])
+def anal_8():
+    data = None
+    return jsonify(data)
 # @app.route('/graph_9', methods=['POST'])
 # def graph_9():
 #     json_graph = graphs.plot_humidity_diff_energy_consumption(df)

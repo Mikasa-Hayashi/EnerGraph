@@ -8,7 +8,7 @@ from dateutil.parser import parse
 
 def plot_total_energy_consumption(df):
     """
-    График энергопотребления всех приборов
+    1. График энергопотребления всех приборов
     :param df: DataFrame с данными
     :return: JSON-представление графика
     """
@@ -16,7 +16,7 @@ def plot_total_energy_consumption(df):
     df_clean['date'] = pd.to_datetime(df_clean['date'])
 
     if len(df_clean) == 0:
-        raise ValueError("Нет данных для построения графика после удаления NaN.")
+        raise ValueError("Нет данн  ых для построения графика после удаления NaN.")
 
     date_list = [str(d) for d in df_clean['date'].tolist()]
     total_energy_list = (df_clean['Appliances'] + df_clean['lights']).tolist()
