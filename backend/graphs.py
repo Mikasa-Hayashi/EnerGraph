@@ -657,3 +657,15 @@ def plot_humidity_diff_energy_consumption(df, humidity_count=9):
                                                      "Потребление: %{y}")
 
     return fig.to_plotly_json()
+
+
+def diagram_average_hourly_consumption(df):
+    pass
+
+
+def diagram_average_weekday_consumption(df):
+    pass
+
+
+def plot_weekday_hourly_consumption(df):
+    pass
