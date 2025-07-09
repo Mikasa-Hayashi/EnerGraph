@@ -16,7 +16,7 @@ def plot_total_energy_consumption(df):
     df_clean['date'] = pd.to_datetime(df_clean['date'])
 
     if len(df_clean) == 0:
-        raise ValueError("Нет данн  ых для построения графика после удаления NaN.")
+        raise ValueError("Нет данных для построения графика после удаления NaN.")
 
     date_list = [str(d) for d in df_clean['date'].tolist()]
     total_energy_list = (df_clean['Appliances'] + df_clean['lights']).tolist()
@@ -38,10 +38,14 @@ def plot_total_energy_consumption(df):
                      zerolinecolor='#902537',
                      autorange=False)
     fig.add_trace(go.Scatter(x=date_list, y=total_energy_list, mode='lines+markers', name=''))
-    fig.update_layout(title='Энергопотребление приборов',
+    fig.update_layout(title=dict(text='Энергопотребление приборов',
+                                 x=0.5,
+                                 xanchor='center',
+                                 yanchor='top',
+                                 font=dict(size=20)),
                       xaxis_title='Дата',
                       yaxis_title='Энергопотребление',
-                      margin=dict(l=0, r=0, t=30, b=0))
+                      margin=dict(l=0, r=0, t=105, b=0))
     fig.update_traces(hoverinfo="all", hovertemplate="Дата: %{x}<br>"
                                                      "Потребление: %{y}")
 
@@ -659,8 +663,79 @@ def plot_humidity_diff_energy_consumption(df, humidity_count=9):
     return fig.to_plotly_json()
 
 
-def diagram_average_hourly_consumption(df):
-    pass
+def histogram_average_hourly_consumption(df):
+    """
+    9. Гистограмма среднего энергопотребления по часам дня
+    :param df: DataFrame с данными
+    :return: JSON-представление графика
+    """
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    if len(df_clean) == 0:
+        raise ValueError("Нет данных для построения графика после удаления NaN.")
+
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+    df_clean['hour'] = df_clean['date'].dt.hour
+
+    avg_energy = df_clean.groupby('hour')[['total_energy', 'Appliances', 'lights']].mean().reset_index().round(2)
+
+    hours_list = avg_energy['hour'].tolist()
+    mean_total_list = avg_energy['total_energy'].tolist()
+    mean_appliances = avg_energy['Appliances'].tolist()
+    mean_lights = avg_energy['lights'].tolist()
+
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=hours_list,
+        y=mean_total_list,
+        name='Общее потребление',
+        marker_color='#1f77b4'
+    ))
+
+    fig.add_trace(go.Bar(
+        x=hours_list,
+        y=mean_appliances,
+        name='Бытовая техника',
+        marker_color='#ff7f0e'
+    ))
+
+    fig.add_trace(go.Bar(
+        x=hours_list,
+        y=mean_lights,
+        name='Освещение',
+        marker_color='#2ca02c'
+    ))
+
+    fig.update_xaxes(
+        title_text='Час дня',
+        tickvals=list(range(24)),
+        range=[-0.5, 23.5]
+    )
+
+    fig.update_yaxes(
+        title_text='Потребление',
+        rangemode='tozero'
+    )
+
+    fig.update_layout(
+        title=dict(text='Среднее энергопотребление по часам дня',
+                   x=0.5,
+                   xanchor='center',
+                   yanchor='top',
+                   font=dict(size=20)),
+        barmode='group',
+        bargap=0.15,
+        bargroupgap=0.1,
+        hovermode='x unified',
+        legend_orientation="h",
+        legend=dict(x=0.5, xanchor='center'),
+        margin=dict(l=0, r=0, t=65, b=0)
+    )
+
+    return fig.to_plotly_json()
 
 
 def diagram_average_weekday_consumption(df):
