@@ -29,63 +29,93 @@
 
     <div class="container">
       <div class="card my-2 card-body" style="width: 77rem">
-        <h2 class="card-title">1. График энергопотребления по времени</h2>
-        <div
-          id="showGraphEnergyOverTime-container"
-          style="width: 1200px; height: 700px"
-        ></div>
+        <h2 class="card-title">1. График энергопотребления всех приборов</h2>
+        <div id="graph_1-container" style="width: 1200px; height: 700px"></div>
       </div>
     </div>
 
     <div class="container">
       <div class="card my-2 card-body" style="width: 77rem">
-        <h2 class="card-title">2. График энергопотребления от температуры</h2>
-        <div
-          id="showGraphEnergyOverTemp-container"
-          style="width: 1200px; height: 900px"
-        ></div>
+        <h2 class="card-title">
+          2. График энергопотребления бытовых приборов и света
+        </h2>
+        <div id="graph_2-container" style="width: 1200px; height: 900px"></div>
       </div>
     </div>
 
     <div class="container">
       <div class="card my-2 card-body" style="width: 77rem">
-        <h2>3. График энергопотребления от влажности</h2>
-        <div
-          id="showGraphEnergyOverWet-container"
-          style="width: 1200px; height: 900px"
-        ></div>
+        <h2>3. График почасового энергопотребления</h2>
+        <div id="graph_3-container" style="width: 1200px; height: 900px"></div>
       </div>
     </div>
 
     <div class="container">
       <div class="card my-2 card-body" style="width: 77rem">
-        <h2>4. Диаграмма потребления по комнатам</h2>
-        <div
-          id="showGraphEnergyOverRooms-container"
-          style="width: 1200px; height: 900px"
-        ></div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="card my-2 card-body" style="width: 77rem">
-        <h2>5. График энергопотребления от погоды</h2>
-        <div
-          id="showGraphEnergyOverWeather-container"
-          style="width: 1200px; height: 900px"
-        ></div>
+        <h2>4. График дневного энергопотребления</h2>
+        <div id="graph_4-container" style="width: 1200px; height: 900px"></div>
       </div>
     </div>
 
     <div class="container">
       <div class="card my-2 card-body" style="width: 77rem">
         <h2>
-          6. График усредненного потребления энергии в определенное время суток
+          5. График зависимости энергопотребления от средней температуры в доме
         </h2>
-        <div
-          id="showGraphAverageEnergyOverHour-container"
-          style="width: 1200px; height: 900px"
-        ></div>
+        <div id="graph_5-container" style="width: 1200px; height: 900px"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 77rem">
+        <h2>
+          6. График зависимости энергопотребления от средней влажности в доме
+        </h2>
+        <div id="graph_6-container" style="width: 1200px; height: 900px"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 77rem">
+        <h2>
+          7. График зависимости энергопотребления от разности температуры
+          снаружи и внутри дома
+        </h2>
+        <div id="graph_7-container" style="width: 1200px; height: 900px"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 77rem">
+        <h2>
+          8. График зависимости энергопотребления от разности влажности снаружи
+          и внутри дома
+        </h2>
+        <div id="graph_8-container" style="width: 1200px; height: 900px"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 77rem">
+        <h2>9. Диаграмма среднего энергопотребления по часам дня</h2>
+        <div id="graph_9-container" style="width: 1200px; height: 900px"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 77rem">
+        <h2>10. Диаграмма среднего энергопотребления по дням недели</h2>
+        <div id="graph_10-container" style="width: 1200px; height: 900px"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card my-2 card-body" style="width: 77rem">
+        <h2>
+          11. График среднего энергопотребления в определенный день недели по
+          времени
+        </h2>
+        <div id="graph_11-container" style="width: 1200px; height: 900px"></div>
       </div>
     </div>
 
@@ -108,72 +138,99 @@
         fetch("/graph_1", { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
-            Plotly.newPlot(
-              "showGraphEnergyOverTime-container",
-              data.data,
-              data.layout,
-              { responsive: true }
-            );
+            Plotly.newPlot("graph_1-container", data.data, data.layout, {
+              responsive: true,
+            });
           });
 
         // второй граф
         fetch("/graph_2", { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
-            Plotly.newPlot(
-              "showGraphEnergyOverTemp-container",
-              data.data,
-              data.layout,
-              { responsive: true }
-            );
+            Plotly.newPlot("graph_2-container", data.data, data.layout, {
+              responsive: true,
+            });
           });
 
         // третий граф
         fetch("/graph_3", { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
-            Plotly.newPlot(
-              "showGraphEnergyOverWet-container",
-              data.data,
-              data.layout,
-              { responsive: true }
-            );
+            Plotly.newPlot("graph_3-container", data.data, data.layout, {
+              responsive: true,
+            });
           });
 
         // четвертый граф
         fetch("/graph_4", { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
-            Plotly.newPlot(
-              "showGraphEnergyOverRooms-container",
-              data.data,
-              data.layout,
-              { responsive: true }
-            );
+            Plotly.newPlot("graph_4-container", data.data, data.layout, {
+              responsive: true,
+            });
           });
 
         // пятый граф
         fetch("/graph_5", { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
-            Plotly.newPlot(
-              "showGraphEnergyOverWeather-container",
-              data.data,
-              data.layout,
-              { responsive: true }
-            );
+            Plotly.newPlot("graph_5-container", data.data, data.layout, {
+              responsive: true,
+            });
           });
 
         // шестой граф
         fetch("/graph_6", { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
-            Plotly.newPlot(
-              "showGraphAverageEnergyOverHour-container",
-              data.data,
-              data.layout,
-              { responsive: true }
-            );
+            Plotly.newPlot("graph_6-container", data.data, data.layout, {
+              responsive: true,
+            });
+          });
+
+        // седьмой граф
+        fetch("/graph_7", { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => {
+            Plotly.newPlot("graph_7-container", data.data, data.layout, {
+              responsive: true,
+            });
+          });
+
+        // восьмой граф
+        fetch("/graph_8", { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => {
+            Plotly.newPlot("graph_8-container", data.data, data.layout, {
+              responsive: true,
+            });
+          });
+
+        // девятый граф
+        fetch("/graph_9", { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => {
+            Plotly.newPlot("graph_9-container", data.data, data.layout, {
+              responsive: true,
+            });
+          });
+
+        // десятый граф
+        fetch("/graph_10", { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => {
+            Plotly.newPlot("graph_10-container", data.data, data.layout, {
+              responsive: true,
+            });
+          });
+
+        // одиннадцатый граф
+        fetch("/graph_11", { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => {
+            Plotly.newPlot("graph_11-container", data.data, data.layout, {
+              responsive: true,
+            });
           });
       };
     </script>
