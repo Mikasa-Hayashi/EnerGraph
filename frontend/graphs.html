@@ -324,6 +324,160 @@
         document.getElementById("anal_b_3").textContent = "Показать анализ";
       }
     };
+
+    // анализ 4
+      document.getElementById("anal_b_4").onclick = function () {
+      const container = document.getElementById("anal_4");
+
+      if (container.style.display === "none") {
+        fetch("/anal_4", { method: "POST" })
+          .then((res) => res.json())
+          .then((data) => {
+            container.textContent = data.anal;
+            container.style.display = "block";
+            document.getElementById("anal_b_4").textContent = "Скрыть анализ";
+          })
+          .catch(() => {
+            container.textContent = "Ошибка при загрузке анализа.";
+            container.style.display = "block";
+          });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_4").textContent = "Показать анализ";
+      }
+    };
+
+    // анализ 5
+    document.getElementById("anal_b_5").onclick = function () {
+    const container = document.getElementById("anal_5");
+
+    if (container.style.display === "none") {
+      fetch("/anal_5", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          container.textContent = data.anal;
+          container.style.display = "block";
+          document.getElementById("anal_b_5").textContent = "Скрыть анализ";
+        })
+        .catch(() => {
+          container.textContent = "Ошибка при загрузке анализа.";
+          container.style.display = "block";
+        });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_5").textContent = "Показать анализ";
+      }
+    };
+
+    // анализ 6
+    document.getElementById("anal_b_6").onclick = function () {
+    const container = document.getElementById("anal_6");
+
+    if (container.style.display === "none") {
+      fetch("/anal_6", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          container.textContent = data.anal;
+          container.style.display = "block";
+          document.getElementById("anal_b_6").textContent = "Скрыть анализ";
+        })
+        .catch(() => {
+          container.textContent = "Ошибка при загрузке анализа.";
+          container.style.display = "block";
+        });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_6").textContent = "Показать анализ";
+      }
+    };
+
+    // анализ 7
+    document.getElementById("anal_b_7").onclick = function () {
+    const container = document.getElementById("anal_7");
+
+    if (container.style.display === "none") {
+      fetch("/anal_7", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          container.textContent = data.anal;
+          container.style.display = "block";
+          document.getElementById("anal_b_7").textContent = "Скрыть анализ";
+        })
+        .catch(() => {
+          container.textContent = "Ошибка при загрузке анализа.";
+          container.style.display = "block";
+        });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_7").textContent = "Показать анализ";
+      }
+    };
+
+    // анализ 8
+      document.getElementById("anal_b_8").onclick = function () {
+      const container = document.getElementById("anal_8");
+
+      if (container.style.display === "none") {
+        fetch("/anal_8", { method: "POST" })
+          .then((res) => res.json())
+          .then((data) => {
+            container.textContent = data.anal;
+            container.style.display = "block";
+            document.getElementById("anal_b_8").textContent = "Скрыть анализ";
+          })
+          .catch(() => {
+            container.textContent = "Ошибка при загрузке анализа.";
+            container.style.display = "block";
+          });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_8").textContent = "Показать анализ";
+      }
+    };
+
+    // анализ 9
+    document.getElementById("anal_b_9").onclick = function () {
+    const container = document.getElementById("anal_9");
+
+    if (container.style.display === "none") {
+      fetch("/anal_9", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          container.textContent = data.anal;
+          container.style.display = "block";
+          document.getElementById("anal_b_9").textContent = "Скрыть анализ";
+        })
+        .catch(() => {
+          container.textContent = "Ошибка при загрузке анализа.";
+          container.style.display = "block";
+        });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_9").textContent = "Показать анализ";
+      }
+    };
+
+    // анализ 10
+    document.getElementById("anal_b_10").onclick = function () {
+    const container = document.getElementById("anal_10");
+
+    if (container.style.display === "none") {
+      fetch("/anal_10", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          container.textContent = data.anal;
+          container.style.display = "block";
+          document.getElementById("anal_b_10").textContent = "Скрыть анализ";
+        })
+        .catch(() => {
+          container.textContent = "Ошибка при загрузке анализа.";
+          container.style.display = "block";
+        });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_10").textContent = "Показать анализ";
+      }
+    };
     </script>
   </body>
 </html>
