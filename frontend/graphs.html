@@ -34,6 +34,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_1">
           Показать анализ
         </button>
+        <div id="anal_1" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -43,7 +44,7 @@
           2. График энергопотребления бытовых приборов и света
         </h2>
         <div id="graph_2-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
+        <button class="btn btn-primary w-100 py-2" id="anal_b_2">
           Показать анализ
         </button>
       </div>
@@ -53,7 +54,7 @@
       <div class="card my-2 card-body" style="width: 77rem">
         <h2>3. График почасового энергопотребления</h2>
         <div id="graph_3-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
+        <button class="btn btn-primary w-100 py-2" id="anal_b_3">
           Показать анализ
         </button>
       </div>
@@ -63,7 +64,7 @@
       <div class="card my-2 card-body" style="width: 77rem">
         <h2>4. График дневного энергопотребления</h2>
         <div id="graph_4-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
+        <button class="btn btn-primary w-100 py-2" id="anal_b_4">
           Показать анализ
         </button>
       </div>
@@ -75,7 +76,7 @@
           5. График зависимости энергопотребления от средней температуры в доме
         </h2>
         <div id="graph_5-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
+        <button class="btn btn-primary w-100 py-2" id="anal_b_5">
           Показать анализ
         </button>
       </div>
@@ -87,7 +88,7 @@
           6. График зависимости энергопотребления от средней влажности в доме
         </h2>
         <div id="graph_6-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
+        <button class="btn btn-primary w-100 py-2" id="anal_b_6">
           Показать анализ
         </button>
       </div>
@@ -100,7 +101,7 @@
           снаружи и внутри дома
         </h2>
         <div id="graph_7-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
+        <button class="btn btn-primary w-100 py-2" id="anal_b_7">
           Показать анализ
         </button>
       </div>
@@ -113,7 +114,7 @@
           и внутри дома
         </h2>
         <div id="graph_8-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
+        <button class="btn btn-primary w-100 py-2" id="anal_b_8">
           Показать анализ
         </button>
       </div>
@@ -123,7 +124,7 @@
       <div class="card my-2 card-body" style="width: 77rem">
         <h2>9. Гистограмма среднего энергопотребления по часам дня</h2>
         <div id="graph_9-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
+        <button class="btn btn-primary w-100 py-2" id="anal_b_9">
           Показать анализ
         </button>
       </div>
@@ -133,12 +134,13 @@
       <div class="card my-2 card-body" style="width: 77rem">
         <h2>10. Гистограмма среднего энергопотребления по дням недели</h2>
         <div id="graph_10-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
+        <button class="btn btn-primary w-100 py-2" id="anal_b_10">
           Показать анализ
         </button>
       </div>
     </div>
 
+<!-- Загрузка графиков -->
     <script>
       function sendHello() {
         fetch("/hello", { method: "POST" })
@@ -244,6 +246,30 @@
             });
           });
       };
+    </script>
+
+<!-- Анализ графиков-->
+    <script>
+      document.getElementById("anal_b_1").onclick = function () {
+      const container = document.getElementById("anal_1");
+
+      if (container.style.display === "none") {
+        fetch("/anal_1", { method: "POST" })
+          .then((res) => res.json())
+          .then((data) => {
+            container.textContent = data.anal;
+            container.style.display = "block";
+            document.getElementById("anal_b_1").textContent = "Скрыть анализ";
+          })
+          .catch(() => {
+            container.textContent = "Ошибка при загрузке анализа.";
+            container.style.display = "block";
+          });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_1").textContent = "Показать анализ";
+      }
+    };
     </script>
   </body>
 </html>
