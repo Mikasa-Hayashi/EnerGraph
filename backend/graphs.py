@@ -299,7 +299,7 @@ def plot_daily_energy_consumption(df):
     return fig.to_plotly_json()
 
 
-def plot_temperature_energy_consumption(df, temperature_count=9):
+def plot_temperature_energy_consumption(df, temperature_count):
     """
     5. График зависимости энергопотребления от средней температуры в доме
     :param df: DataFrame с данными
@@ -389,7 +389,7 @@ def plot_temperature_energy_consumption(df, temperature_count=9):
     return fig.to_plotly_json()
 
 
-def plot_humidity_energy_consumption(df, humidity_count=9):
+def plot_humidity_energy_consumption(df, humidity_count):
     """
     6. График зависимости энергопотребления от средней влажности в доме
     :param df: DataFrame с данными
@@ -480,7 +480,7 @@ def plot_humidity_energy_consumption(df, humidity_count=9):
     return fig.to_plotly_json()
 
 
-def plot_temperature_diff_energy_consumption(df, temperature_count=9):
+def plot_temperature_diff_energy_consumption(df, temperature_count):
     """
     7. График зависимости энергопотребления от разности температуры снаружи и внутри дома
     :param df: DataFrame с данными
@@ -571,7 +571,7 @@ def plot_temperature_diff_energy_consumption(df, temperature_count=9):
     return fig.to_plotly_json()
 
 
-def plot_humidity_diff_energy_consumption(df, humidity_count=9):
+def plot_humidity_diff_energy_consumption(df, humidity_count):
     """
     8. График зависимости энергопотребления от разности влажности снаружи и внутри дома
     :param df: DataFrame с данными

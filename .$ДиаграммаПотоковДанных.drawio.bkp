@@ -1,0 +1,41 @@
+<mxfile host="Electron" modified="2025-07-10T17:57:45.557Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="DaUlvbZEzcigwi5uFwWS" version="21.6.8" type="device">
+  <diagram name="Страница — 1" id="-TEq8oQ1dPpgjUGdFlei">
+    <mxGraphModel dx="1290" dy="629" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="UYXnQoleKdWe4Hr3ALmW-6" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Пользовательский &lt;br&gt;файл&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="UYXnQoleKdWe4Hr3ALmW-1" target="UYXnQoleKdWe4Hr3ALmW-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UYXnQoleKdWe4Hr3ALmW-1" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="210" y="280" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UYXnQoleKdWe4Hr3ALmW-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="UYXnQoleKdWe4Hr3ALmW-2" target="UYXnQoleKdWe4Hr3ALmW-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UYXnQoleKdWe4Hr3ALmW-11" value="Путь до &lt;br&gt;сохранённого &lt;br&gt;файла" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="UYXnQoleKdWe4Hr3ALmW-7">
+          <mxGeometry x="-0.2589" relative="1" as="geometry">
+            <mxPoint x="9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UYXnQoleKdWe4Hr3ALmW-2" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; line-height: 31px;&quot;&gt;&lt;div style=&quot;color: rgb(59, 59, 59); background-color: rgb(255, 255, 255); line-height: 19px;&quot;&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;load_file&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="265" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UYXnQoleKdWe4Hr3ALmW-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="UYXnQoleKdWe4Hr3ALmW-3" target="UYXnQoleKdWe4Hr3ALmW-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UYXnQoleKdWe4Hr3ALmW-12" value="Сохранённый&lt;br&gt;файл" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="UYXnQoleKdWe4Hr3ALmW-8">
+          <mxGeometry x="-0.12" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UYXnQoleKdWe4Hr3ALmW-3" value="&lt;div style=&quot;color: rgb(59, 59, 59); background-color: rgb(255, 255, 255); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; line-height: 19px;&quot;&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;load_data&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="265" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UYXnQoleKdWe4Hr3ALmW-5" value="&lt;div style=&quot;color: rgb(59, 59, 59); background-color: rgb(255, 255, 255); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; line-height: 19px;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;validate_data&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="625" y="390" width="140" height="55" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
