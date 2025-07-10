@@ -194,8 +194,15 @@ def anal_7():
 def anal_8():
     data = None
     return jsonify(data)
-# @app.route('/graph_9', methods=['POST'])
-# def graph_9():
-#     json_graph = graphs.plot_humidity_diff_energy_consumption(df)
-#     print(json_graph)
-#     return jsonify(json_graph)
+
+
+@app.route('/anal_9', methods=['POST'])
+def anal_9():
+    data = None
+    return jsonify(data)
+
+
+@app.route('/anal_10', methods=['POST'])
+def anal_10():
+    data = None
+    return jsonify(data)
