@@ -45,7 +45,7 @@ def load_file():
         if validate_data(df):
             return render_template('graphs.html')
 
-        return f'Error: {file.filename}'
+        return render_template('load_error.html')
 
     return render_template('index.html')
 
