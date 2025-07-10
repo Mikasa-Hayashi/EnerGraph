@@ -42,10 +42,12 @@ def load_file():
         global df
         df = load_data(filepath)
 
-        if validate_data(df):
+        is_valid, err = validate_data(df)
+
+        if is_valid:
             return render_template('graphs.html')
 
-        return render_template('load_error.html')
+        return render_template('load_error.html', error_message=err)
 
     return render_template('index.html')
 
