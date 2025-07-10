@@ -1,8 +1,7 @@
 import plotly .graph_objs as go
 from plotly.subplots import make_subplots
-import plotly
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import timedelta
 from dateutil.parser import parse
 
 

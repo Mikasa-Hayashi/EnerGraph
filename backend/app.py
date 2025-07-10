@@ -2,14 +2,11 @@ import os
 import pandas as pd
 
 from Scripts.bottle import redirect
-from flask import Flask, render_template, jsonify, flash, request, url_for
+from flask import Flask, render_template, jsonify, flash, request
 from werkzeug.utils import secure_filename
-
-# from .data_handler import load_data, build_graph
 from .data_handler import validate_data, load_data
-import plotly .graph_objs as go
-import plotly
-import json
+
+
 
 df = None
 
@@ -18,6 +15,7 @@ UPLOAD_FOLDER = 'backend/datasets'
 app = Flask(__name__, template_folder='../frontend', static_folder='../frontend')
 app.secret_key = 'debi'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 @app.route('/')
 def index():
@@ -44,15 +42,10 @@ def load_file():
         global df
         df = load_data(filepath)
 
-        print(validate_data(df))
         if validate_data(df):
             return render_template('graphs.html')
 
         return f'Error: {file.filename}'
-        # filename  = os.path.join(UPLOAD_FOLDER, file.filename)
-        # file.save(filepath)
-        # df = load_data(filepath)
-        # valid = validate_data(df)
 
     return render_template('index.html')
 
