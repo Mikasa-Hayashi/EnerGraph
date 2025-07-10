@@ -740,7 +740,7 @@ def histogram_average_hourly_consumption(df):
 
 def histogram_average_weekly_consumption(df):
     """
-    Гистограмма среднего энергопотребления по дням недели
+    10. Гистограмма среднего энергопотребления по дням недели
     :param df: DataFrame с данными
     :return: JSON-представление графика
     """
