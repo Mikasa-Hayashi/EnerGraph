@@ -134,13 +134,8 @@ def anal_1():
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
     df_clean['date'] = pd.to_datetime(df_clean['date'])
 
-    if df_clean.empty:
-        data['anal'] = "Нет данных для анализа после удаления NaN."
-        return data
-
     df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
 
-    # Total stats (full dataset)
     max_val = df_clean['total_energy'].max()
     min_val = df_clean['total_energy'].min()
     mean_val = df_clean['total_energy'].mean()
@@ -148,7 +143,6 @@ def anal_1():
     max_time = df_clean.loc[df_clean['total_energy'].idxmax(), 'date']
     min_time = df_clean.loc[df_clean['total_energy'].idxmin(), 'date']
 
-    # Output summary
     out = (
         f"📈 Анализ энергопотребления всех приборов:\n\n"
         f"• Максимум: {max_val:.2f} кВт ({max_time.strftime('%d.%m.%Y %H:%M')})\n"
@@ -167,10 +161,6 @@ def anal_2():
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
     df_clean['date'] = pd.to_datetime(df_clean['date'])
 
-    if df_clean.empty:
-        data['anal'] = "Нет данных для анализа после удаления NaN."
-        return data
-
     df_tail = df_clean.tail(75)
 
     max_app = df_tail['Appliances'].max()
@@ -186,6 +176,7 @@ def anal_2():
     time_min_light = df_tail.loc[df_tail['lights'].idxmin(), 'date']
 
     out = (
+        f"🔦 Анализ энергопотребления бытовых приборов и света:\n\n"
         f"🔌 Бытовые приборы:\n"
         f"• Максимум: {max_app:.2f} кВт ({time_max_app.strftime('%d.%m.%Y %H:%M')})\n"
         f"• Минимум: {min_app:.2f} кВт ({time_min_app.strftime('%d.%m.%Y %H:%M')})\n"
@@ -204,18 +195,11 @@ def anal_2():
 def anal_3():
     data = {}
 
-    # Clean and prepare data
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
     df_clean['date'] = pd.to_datetime(df_clean['date'])
 
-    if df_clean.empty:
-        data['anal'] = "Нет данных для анализа после удаления NaN."
-        return data
-
-    # Total energy
     df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
 
-    # Resample to hourly
     hourly_sum = df_clean.resample('h', on='date')['total_energy'].sum().reset_index()
     hourly_appliances = df_clean.resample('h', on='date')['Appliances'].sum().reset_index()
     hourly_lights = df_clean.resample('h', on='date')['lights'].sum().reset_index()
@@ -265,39 +249,30 @@ def anal_4():
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
     df_clean['date'] = pd.to_datetime(df_clean['date'])
 
-    if df_clean.empty:
-        data['anal'] = "Нет данных для анализа после удаления NaN."
-        return data
-
     df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
 
-    # Resample to daily totals
     daily_sum = df_clean.resample('d', on='date')['total_energy'].sum().reset_index()
     daily_appliances = df_clean.resample('d', on='date')['Appliances'].sum().reset_index()
     daily_lights = df_clean.resample('d', on='date')['lights'].sum().reset_index()
 
-    # Total energy stats
     max_total = daily_sum['total_energy'].max()
     min_total = daily_sum['total_energy'].min()
     mean_total = daily_sum['total_energy'].mean()
     time_max_total = daily_sum.loc[daily_sum['total_energy'].idxmax(), 'date']
     time_min_total = daily_sum.loc[daily_sum['total_energy'].idxmin(), 'date']
 
-    # Appliances stats
     max_app = daily_appliances['Appliances'].max()
     min_app = daily_appliances['Appliances'].min()
     mean_app = daily_appliances['Appliances'].mean()
     time_max_app = daily_appliances.loc[daily_appliances['Appliances'].idxmax(), 'date']
     time_min_app = daily_appliances.loc[daily_appliances['Appliances'].idxmin(), 'date']
 
-    # Lights stats
     max_light = daily_lights['lights'].max()
     min_light = daily_lights['lights'].min()
     mean_light = daily_lights['lights'].mean()
     time_max_light = daily_lights.loc[daily_lights['lights'].idxmax(), 'date']
     time_min_light = daily_lights.loc[daily_lights['lights'].idxmin(), 'date']
 
-    # Output string
     out = (
         f"📅 Дневной анализ энергопотребления:\n\n"
         f"🔋 Общее потребление:\n"
@@ -320,35 +295,220 @@ def anal_4():
 
 @app.route('/anal_5', methods=['POST'])
 def anal_5():
-    data = None
-    return jsonify(data)
+    data = {}
+    temperature_count = 9 # число комнат
+
+    temperature_columns = [f'T{i}' for i in range(1, temperature_count + 1)]
+    all_columns = temperature_columns + ['Appliances', 'lights']
+    df_clean = df.dropna(subset=all_columns).copy()
+
+    df_clean['avg_temp'] = df_clean[temperature_columns].mean(axis=1).round(1)
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+
+    grouped = df_clean.groupby('avg_temp')
+    mean_total = grouped['total_energy'].mean().round(0)
+    mean_appliances = grouped['Appliances'].mean().round(0)
+    mean_lights = grouped['lights'].mean().round(0)
+
+    temp_max_energy = mean_total.idxmax()
+    max_energy = mean_total.max()
+
+    temp_min_energy = mean_total.idxmin()
+    min_energy = mean_total.min()
+
+    avg_energy = mean_total.mean()
+
+    out = (
+        f"🌡️ Зависимость энергопотребления от средней температуры в доме:\n\n"
+        f"• 🔥 Максимальное среднее потребление: {max_energy:.0f} кВт при {temp_max_energy}°C\n"
+        f"• ❄️ Минимальное среднее потребление: {min_energy:.0f} кВт при {temp_min_energy}°C\n"
+        f"• 📊 Среднее по всем температурам: {avg_energy:.0f} кВт"
+    )
+
+    data['anal'] = out
+    return data
 
 
 @app.route('/anal_6', methods=['POST'])
 def anal_6():
-    data = None
-    return jsonify(data)
+    data = {}
+    humidity_count = 9 # число комнат
+
+    humidity_columns = [f'RH_{i}' for i in range(1, humidity_count + 1)]
+    all_columns = humidity_columns + ['Appliances', 'lights']
+    df_clean = df.dropna(subset=all_columns).copy()
+
+    df_clean['avg_humidity'] = df_clean[humidity_columns].mean(axis=1).round(1)
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+
+    grouped = df_clean.groupby('avg_humidity')
+    mean_total = grouped['total_energy'].mean().round(0)
+    mean_appliances = grouped['Appliances'].mean().round(0)
+    mean_lights = grouped['lights'].mean().round(0)
+
+    hum_max_energy = mean_total.idxmax()
+    max_energy = mean_total.max()
+
+    hum_min_energy = mean_total.idxmin()
+    min_energy = mean_total.min()
+
+    avg_energy = mean_total.mean()
+
+    out = (
+        f"💧 Зависимость энергопотребления от средней влажности в доме:\n\n"
+        f"• 📈 Максимальное среднее потребление: {max_energy:.0f} кВт при {hum_max_energy}% влажности\n"
+        f"• 📉 Минимальное среднее потребление: {min_energy:.0f} кВт при {hum_min_energy}% влажности\n"
+        f"• 📊 Среднее по всем уровням влажности: {avg_energy:.0f} кВт"
+    )
+
+    data['anal'] = out
+    return data
 
 
 @app.route('/anal_7', methods=['POST'])
 def anal_7():
-    data = None
-    return jsonify(data)
+    data = {}
+    temperature_count = 9
+
+    temperature_columns = [f'T{i}' for i in range(1, temperature_count + 1)]
+    all_columns = temperature_columns + ['Appliances', 'lights', 'T_out']
+    df_clean = df.dropna(subset=all_columns).copy()
+
+    df_clean['temperature_diff'] = (df_clean['T_out'] - df_clean[temperature_columns].mean(axis=1)).round(1)
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+
+    grouped = df_clean.groupby('temperature_diff')
+    mean_total = grouped['total_energy'].mean().round(0)
+    mean_appliances = grouped['Appliances'].mean().round(0)
+    mean_lights = grouped['lights'].mean().round(0)
+
+    diff_max_energy = mean_total.idxmax()
+    max_energy = mean_total.max()
+
+    diff_min_energy = mean_total.idxmin()
+    min_energy = mean_total.min()
+
+    avg_energy = mean_total.mean()
+
+    out = (
+        f"🌡️ Зависимость энергопотребления от разности температур (улица - дом):\n\n"
+        f"• 📈 Максимальное среднее потребление: {max_energy:.0f} кВт при разности {diff_max_energy}°C\n"
+        f"• 📉 Минимальное среднее потребление: {min_energy:.0f} кВт при разности {diff_min_energy}°C\n"
+        f"• 📊 Среднее по всем значениям разности температур: {avg_energy:.0f} кВт"
+    )
+
+    data['anal'] = out
+    return data
 
 
 @app.route('/anal_8', methods=['POST'])
 def anal_8():
-    data = None
-    return jsonify(data)
+    data = {}
+    humidity_count = 9
+
+    humidity_columns = [f'RH_{i}' for i in range(1, humidity_count + 1)]
+    all_columns = humidity_columns + ['Appliances', 'lights', 'RH_out']
+    df_clean = df.dropna(subset=all_columns).copy()
+
+    df_clean['humidity_diff'] = (df_clean['RH_out'] - df_clean[humidity_columns].mean(axis=1)).round(1)
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+
+    grouped = df_clean.groupby('humidity_diff')
+    mean_total = grouped['total_energy'].mean().round(0)
+    mean_appliances = grouped['Appliances'].mean().round(0)
+    mean_lights = grouped['lights'].mean().round(0)
+
+    diff_max_energy = mean_total.idxmax()
+    max_energy = mean_total.max()
+
+    diff_min_energy = mean_total.idxmin()
+    min_energy = mean_total.min()
+
+    avg_energy = mean_total.mean()
+
+    out = (
+        f"💧 Зависимость энергопотребления от разности влажности (улица - дом):\n\n"
+        f"• 📈 Максимальное среднее потребление: {max_energy:.0f} кВт при разности {diff_max_energy}%\n"
+        f"• 📉 Минимальное среднее потребление: {min_energy:.0f} кВт при разности {diff_min_energy}%\n"
+        f"• 📊 Среднее по всем значениям разности влажности: {avg_energy:.0f} кВт"
+    )
+
+    data['anal'] = out
+    return data
 
 
 @app.route('/anal_9', methods=['POST'])
 def anal_9():
-    data = None
-    return jsonify(data)
+    data = {}
+
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+    df_clean['hour'] = df_clean['date'].dt.hour
+
+    avg_energy = df_clean.groupby('hour')[['total_energy', 'Appliances', 'lights']].mean().reset_index().round(2)
+
+    max_hour = avg_energy.loc[avg_energy['total_energy'].idxmax(), 'hour']
+    max_val = avg_energy['total_energy'].max()
+
+    min_hour = avg_energy.loc[avg_energy['total_energy'].idxmin(), 'hour']
+    min_val = avg_energy['total_energy'].min()
+
+    avg_val = avg_energy['total_energy'].mean()
+
+    out = (
+        f"🕒 Анализ среднего энергопотребления по часам:\n\n"
+        f"• ⏰ Максимальное потребление в {max_hour}:00 — {max_val:.2f} кВт\n"
+        f"• 💤 Минимальное потребление в {min_hour}:00 — {min_val:.2f} кВт\n"
+        f"• 📊 Среднее потребление за сутки: {avg_val:.2f} кВт"
+    )
+
+    data['anal'] = out
+    return data
 
 
 @app.route('/anal_10', methods=['POST'])
 def anal_10():
-    data = None
-    return jsonify(data)
+    data = {}
+
+    days_ru = {
+        'Monday': 'Понедельник',
+        'Tuesday': 'Вторник',
+        'Wednesday': 'Среда',
+        'Thursday': 'Четверг',
+        'Friday': 'Пятница',
+        'Saturday': 'Суббота',
+        'Sunday': 'Воскресенье'
+    }
+
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+    df_clean['day_of_week'] = df_clean['date'].dt.day_name()
+    df_clean['day_num'] = df_clean['date'].dt.dayofweek
+
+    weekly_avg = df_clean.groupby(['day_num', 'day_of_week'], as_index=False)[
+        ['total_energy', 'Appliances', 'lights']].mean().round(2)
+
+    weekly_avg = weekly_avg.sort_values('day_num')
+    weekly_avg['day_of_week_ru'] = weekly_avg['day_of_week'].map(days_ru)
+
+    max_day = weekly_avg.loc[weekly_avg['total_energy'].idxmax(), 'day_of_week_ru']
+    max_val = weekly_avg['total_energy'].max()
+
+    min_day = weekly_avg.loc[weekly_avg['total_energy'].idxmin(), 'day_of_week_ru']
+    min_val = weekly_avg['total_energy'].min()
+
+    avg_val = weekly_avg['total_energy'].mean()
+
+    out = (
+        f"📅 Анализ среднего энергопотребления по дням недели:\n\n"
+        f"• 🔝 Максимальное потребление в {max_day} — {max_val:.2f} кВт\n"
+        f"• 🔻 Минимальное потребление в {min_day} — {min_val:.2f} кВт\n"
+        f"• 📊 Среднее потребление за неделю: {avg_val:.2f} кВт"
+    )
+
+    data['anal'] = out
+    return data
