@@ -88,25 +88,25 @@ def graph_4():
 
 @app.route('/graph_5', methods=['POST'])
 def graph_5():
-    plot_json = graphs.plot_temperature_energy_consumption(df)
+    plot_json = graphs.plot_temperature_energy_consumption(df, temp_sensors)
     return jsonify(plot_json)
 
 
 @app.route('/graph_6', methods=['POST'])
 def graph_6():
-    plot_json = graphs.plot_humidity_energy_consumption(df)
+    plot_json = graphs.plot_humidity_energy_consumption(df, humidity_sensors)
     return jsonify(plot_json)
 
 
 @app.route('/graph_7', methods=['POST'])
 def graph_7():
-    plot_json = graphs.plot_temperature_diff_energy_consumption(df)
+    plot_json = graphs.plot_temperature_diff_energy_consumption(df, temp_sensors)
     return jsonify(plot_json)
 
 
 @app.route('/graph_8', methods=['POST'])
 def graph_8():
-    plot_json = graphs.plot_humidity_diff_energy_consumption(df)
+    plot_json = graphs.plot_humidity_diff_energy_consumption(df, humidity_sensors)
     return jsonify(plot_json)
 
 
