@@ -133,8 +133,14 @@ def anal_1():
 
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
     df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    if df_clean.empty:
+        data['anal'] = "Нет данных для анализа после удаления NaN."
+        return data
+
     df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
 
+    # Total stats (full dataset)
     max_val = df_clean['total_energy'].max()
     min_val = df_clean['total_energy'].min()
     mean_val = df_clean['total_energy'].mean()
@@ -142,12 +148,12 @@ def anal_1():
     max_time = df_clean.loc[df_clean['total_energy'].idxmax(), 'date']
     min_time = df_clean.loc[df_clean['total_energy'].idxmin(), 'date']
 
+    # Output summary
     out = (
-        f"Максимальное значение энергопотребления достигается {max_time.strftime('%d.%m.%Y %H:%M')} "
-        f"и равно: {max_val:.2f} кВт\n"
-        f"Минимальное значение энергопотребления достигается {min_time.strftime('%d.%m.%Y %H:%M')} "
-        f"и равно: {min_val:.2f} кВт\n"
-        f"Среднее значение энергопотребления за весь период: {mean_val:.2f} кВт"
+        f"📈 Анализ энергопотребления всех приборов:\n\n"
+        f"• Максимум: {max_val:.2f} кВт ({max_time.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Минимум: {min_val:.2f} кВт ({min_time.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Среднее значение за период: {mean_val:.2f} кВт"
     )
 
     data['anal'] = out
@@ -254,8 +260,62 @@ def anal_3():
 
 @app.route('/anal_4', methods=['POST'])
 def anal_4():
-    data = None
-    return jsonify(data)
+    data = {}
+
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    if df_clean.empty:
+        data['anal'] = "Нет данных для анализа после удаления NaN."
+        return data
+
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+
+    # Resample to daily totals
+    daily_sum = df_clean.resample('d', on='date')['total_energy'].sum().reset_index()
+    daily_appliances = df_clean.resample('d', on='date')['Appliances'].sum().reset_index()
+    daily_lights = df_clean.resample('d', on='date')['lights'].sum().reset_index()
+
+    # Total energy stats
+    max_total = daily_sum['total_energy'].max()
+    min_total = daily_sum['total_energy'].min()
+    mean_total = daily_sum['total_energy'].mean()
+    time_max_total = daily_sum.loc[daily_sum['total_energy'].idxmax(), 'date']
+    time_min_total = daily_sum.loc[daily_sum['total_energy'].idxmin(), 'date']
+
+    # Appliances stats
+    max_app = daily_appliances['Appliances'].max()
+    min_app = daily_appliances['Appliances'].min()
+    mean_app = daily_appliances['Appliances'].mean()
+    time_max_app = daily_appliances.loc[daily_appliances['Appliances'].idxmax(), 'date']
+    time_min_app = daily_appliances.loc[daily_appliances['Appliances'].idxmin(), 'date']
+
+    # Lights stats
+    max_light = daily_lights['lights'].max()
+    min_light = daily_lights['lights'].min()
+    mean_light = daily_lights['lights'].mean()
+    time_max_light = daily_lights.loc[daily_lights['lights'].idxmax(), 'date']
+    time_min_light = daily_lights.loc[daily_lights['lights'].idxmin(), 'date']
+
+    # Output string
+    out = (
+        f"📅 Дневной анализ энергопотребления:\n\n"
+        f"🔋 Общее потребление:\n"
+        f"• Максимум: {max_total:.2f} кВт ({time_max_total.strftime('%d.%m.%Y')})\n"
+        f"• Минимум: {min_total:.2f} кВт ({time_min_total.strftime('%d.%m.%Y')})\n"
+        f"• Среднее: {mean_total:.2f} кВт\n\n"
+        f"🔌 Приборы:\n"
+        f"• Максимум: {max_app:.2f} кВт ({time_max_app.strftime('%d.%m.%Y')})\n"
+        f"• Минимум: {min_app:.2f} кВт ({time_min_app.strftime('%d.%m.%Y')})\n"
+        f"• Среднее: {mean_app:.2f} кВт\n\n"
+        f"💡 Освещение:\n"
+        f"• Максимум: {max_light:.2f} кВт ({time_max_light.strftime('%d.%m.%Y')})\n"
+        f"• Минимум: {min_light:.2f} кВт ({time_min_light.strftime('%d.%m.%Y')})\n"
+        f"• Среднее: {mean_light:.2f} кВт"
+    )
+
+    data['anal'] = out
+    return data
 
 
 @app.route('/anal_5', methods=['POST'])
