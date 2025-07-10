@@ -121,7 +121,7 @@ ANAL PART
 '''
 
 @app.route('/anal_1', methods=['POST'])
-def anal_1():
+def analysisEnergyСonsumptionOfAllDevices():
     data = {}
 
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
@@ -148,7 +148,7 @@ def anal_1():
 
 
 @app.route('/anal_2', methods=['POST'])
-def anal_2():
+def analysisEnergyConsumptionHouseholdAppliancesAndLight():
     data = {}
 
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
@@ -185,7 +185,7 @@ def anal_2():
 
 
 @app.route('/anal_3', methods=['POST'])
-def anal_3():
+def analysisEnergyConsumptionHourly():
     data = {}
 
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
@@ -236,7 +236,7 @@ def anal_3():
 
 
 @app.route('/anal_4', methods=['POST'])
-def anal_4():
+def analysisEnergyConsumptionDaily():
     data = {}
 
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
@@ -287,7 +287,7 @@ def anal_4():
 
 
 @app.route('/anal_5', methods=['POST'])
-def anal_5():
+def analysisDependenceEnergyConsumptionAverageTemperatureHouse():
     data = {}
     temperature_count = 9 # число комнат
 
@@ -300,8 +300,6 @@ def anal_5():
 
     grouped = df_clean.groupby('avg_temp')
     mean_total = grouped['total_energy'].mean().round(0)
-    mean_appliances = grouped['Appliances'].mean().round(0)
-    mean_lights = grouped['lights'].mean().round(0)
 
     temp_max_energy = mean_total.idxmax()
     max_energy = mean_total.max()
@@ -323,7 +321,7 @@ def anal_5():
 
 
 @app.route('/anal_6', methods=['POST'])
-def anal_6():
+def analysisDependenceEnergyConsumptionAverageHumidityHouse():
     data = {}
     humidity_count = 9 # число комнат
 
@@ -336,8 +334,6 @@ def anal_6():
 
     grouped = df_clean.groupby('avg_humidity')
     mean_total = grouped['total_energy'].mean().round(0)
-    mean_appliances = grouped['Appliances'].mean().round(0)
-    mean_lights = grouped['lights'].mean().round(0)
 
     hum_max_energy = mean_total.idxmax()
     max_energy = mean_total.max()
@@ -359,7 +355,7 @@ def anal_6():
 
 
 @app.route('/anal_7', methods=['POST'])
-def anal_7():
+def analysisDependenceEnergyConsumptionTemperatureDifference():
     data = {}
     temperature_count = 9
 
@@ -372,8 +368,6 @@ def anal_7():
 
     grouped = df_clean.groupby('temperature_diff')
     mean_total = grouped['total_energy'].mean().round(0)
-    mean_appliances = grouped['Appliances'].mean().round(0)
-    mean_lights = grouped['lights'].mean().round(0)
 
     diff_max_energy = mean_total.idxmax()
     max_energy = mean_total.max()
@@ -395,7 +389,7 @@ def anal_7():
 
 
 @app.route('/anal_8', methods=['POST'])
-def anal_8():
+def analysisDependenceEnergyConsumptionHumidityDifference():
     data = {}
     humidity_count = 9
 
@@ -408,8 +402,6 @@ def anal_8():
 
     grouped = df_clean.groupby('humidity_diff')
     mean_total = grouped['total_energy'].mean().round(0)
-    mean_appliances = grouped['Appliances'].mean().round(0)
-    mean_lights = grouped['lights'].mean().round(0)
 
     diff_max_energy = mean_total.idxmax()
     max_energy = mean_total.max()
@@ -431,7 +423,7 @@ def anal_8():
 
 
 @app.route('/anal_9', methods=['POST'])
-def anal_9():
+def analysisAverageEnergyConsumptionHour():
     data = {}
 
     df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
@@ -462,7 +454,7 @@ def anal_9():
 
 
 @app.route('/anal_10', methods=['POST'])
-def anal_10():
+def analysisAverageEnergyConsumptionDaysWeek():
     data = {}
 
     days_ru = {
