@@ -107,6 +107,6 @@ def validate_data(df):
 
     except Exception as e:
         print(f"Ошибка при валидации файла: {str(e)}")
-        return False
+        return False, e
 
-    return True
+    return True, None
