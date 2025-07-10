@@ -4,11 +4,12 @@ import pandas as pd
 from Scripts.bottle import redirect
 from flask import Flask, render_template, jsonify, flash, request
 from werkzeug.utils import secure_filename
-from .data_handler import validate_data, load_data
+from .data_handler import validate_data, load_data, find_sensors_count
 
 
 
 df = None
+temp_sensors = humidity_sensors = 0
 
 UPLOAD_FOLDER = 'backend/datasets'
 
@@ -42,10 +43,15 @@ def load_file():
         global df
         df = load_data(filepath)
 
-        if validate_data(df):
+        is_valid, err = validate_data(df)
+
+        if is_valid:
+            global temp_sensors
+            global humidity_sensors
+            temp_sensors, humidity_sensors = find_sensors_count(df)
             return render_template('graphs.html')
 
-        return render_template('load_error.html')
+        return render_template('load_error.html', error_message=err)
 
     return render_template('index.html')
 
@@ -82,25 +88,25 @@ def graph_4():
 
 @app.route('/graph_5', methods=['POST'])
 def graph_5():
-    plot_json = graphs.plot_temperature_energy_consumption(df)
+    plot_json = graphs.plot_temperature_energy_consumption(df, temp_sensors)
     return jsonify(plot_json)
 
 
 @app.route('/graph_6', methods=['POST'])
 def graph_6():
-    plot_json = graphs.plot_humidity_energy_consumption(df)
+    plot_json = graphs.plot_humidity_energy_consumption(df, humidity_sensors)
     return jsonify(plot_json)
 
 
 @app.route('/graph_7', methods=['POST'])
 def graph_7():
-    plot_json = graphs.plot_temperature_diff_energy_consumption(df)
+    plot_json = graphs.plot_temperature_diff_energy_consumption(df, temp_sensors)
     return jsonify(plot_json)
 
 
 @app.route('/graph_8', methods=['POST'])
 def graph_8():
-    plot_json = graphs.plot_humidity_diff_energy_consumption(df)
+    plot_json = graphs.plot_humidity_diff_energy_consumption(df, humidity_sensors)
     return jsonify(plot_json)
 
 
@@ -289,9 +295,8 @@ def analysisEnergyConsumptionDaily():
 @app.route('/anal_5', methods=['POST'])
 def analysisDependenceEnergyConsumptionAverageTemperatureHouse():
     data = {}
-    temperature_count = 9 # число комнат
 
-    temperature_columns = [f'T{i}' for i in range(1, temperature_count + 1)]
+    temperature_columns = [f'T{i}' for i in range(1, temp_sensors + 1)]
     all_columns = temperature_columns + ['Appliances', 'lights']
     df_clean = df.dropna(subset=all_columns).copy()
 
@@ -323,9 +328,8 @@ def analysisDependenceEnergyConsumptionAverageTemperatureHouse():
 @app.route('/anal_6', methods=['POST'])
 def analysisDependenceEnergyConsumptionAverageHumidityHouse():
     data = {}
-    humidity_count = 9 # число комнат
 
-    humidity_columns = [f'RH_{i}' for i in range(1, humidity_count + 1)]
+    humidity_columns = [f'RH_{i}' for i in range(1, humidity_sensors + 1)]
     all_columns = humidity_columns + ['Appliances', 'lights']
     df_clean = df.dropna(subset=all_columns).copy()
 
@@ -357,9 +361,8 @@ def analysisDependenceEnergyConsumptionAverageHumidityHouse():
 @app.route('/anal_7', methods=['POST'])
 def analysisDependenceEnergyConsumptionTemperatureDifference():
     data = {}
-    temperature_count = 9
 
-    temperature_columns = [f'T{i}' for i in range(1, temperature_count + 1)]
+    temperature_columns = [f'T{i}' for i in range(1, temp_sensors + 1)]
     all_columns = temperature_columns + ['Appliances', 'lights', 'T_out']
     df_clean = df.dropna(subset=all_columns).copy()
 
@@ -391,9 +394,8 @@ def analysisDependenceEnergyConsumptionTemperatureDifference():
 @app.route('/anal_8', methods=['POST'])
 def analysisDependenceEnergyConsumptionHumidityDifference():
     data = {}
-    humidity_count = 9
 
-    humidity_columns = [f'RH_{i}' for i in range(1, humidity_count + 1)]
+    humidity_columns = [f'RH_{i}' for i in range(1, humidity_sensors + 1)]
     all_columns = humidity_columns + ['Appliances', 'lights', 'RH_out']
     df_clean = df.dropna(subset=all_columns).copy()
 
