@@ -139,19 +139,6 @@
       </div>
     </div>
 
-    <div class="container">
-      <div class="card my-2 card-body" style="width: 77rem">
-        <h2>
-          11. График среднего энергопотребления в определенный день недели по
-          времени
-        </h2>
-        <div id="graph_11-container" style="width: 1200px; height: 900px"></div>
-        <button class="btn btn-primary w-100 py-2" id="anal_b_1">
-          Показать анализ
-        </button>
-      </div>
-    </div>
-
     <script>
       function sendHello() {
         fetch("/hello", { method: "POST" })
@@ -253,15 +240,6 @@
           .then((response) => response.json())
           .then((data) => {
             Plotly.newPlot("graph_10-container", data.data, data.layout, {
-              responsive: true,
-            });
-          });
-
-        // одиннадцатый граф
-        fetch("/graph_11", { method: "POST" })
-          .then((response) => response.json())
-          .then((data) => {
-            Plotly.newPlot("graph_11-container", data.data, data.layout, {
               responsive: true,
             });
           });
