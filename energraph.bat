@@ -57,7 +57,6 @@ if exist requirements.txt (
 :: === Launch main.py
 echo Launching EnerGraph...
 python main.py
-start http://127.0.0.1:5000
 exit /b
 
 :: === Error display block
