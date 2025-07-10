@@ -156,14 +156,100 @@ def anal_1():
 
 @app.route('/anal_2', methods=['POST'])
 def anal_2():
-    data = None
-    return jsonify(data)
+    data = {}
+
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    if df_clean.empty:
+        data['anal'] = "Нет данных для анализа после удаления NaN."
+        return data
+
+    df_tail = df_clean.tail(75)
+
+    max_app = df_tail['Appliances'].max()
+    min_app = df_tail['Appliances'].min()
+    mean_app = df_tail['Appliances'].mean()
+    time_max_app = df_tail.loc[df_tail['Appliances'].idxmax(), 'date']
+    time_min_app = df_tail.loc[df_tail['Appliances'].idxmin(), 'date']
+
+    max_light = df_tail['lights'].max()
+    min_light = df_tail['lights'].min()
+    mean_light = df_tail['lights'].mean()
+    time_max_light = df_tail.loc[df_tail['lights'].idxmax(), 'date']
+    time_min_light = df_tail.loc[df_tail['lights'].idxmin(), 'date']
+
+    out = (
+        f"🔌 Бытовые приборы:\n"
+        f"• Максимум: {max_app:.2f} кВт ({time_max_app.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Минимум: {min_app:.2f} кВт ({time_min_app.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Среднее: {mean_app:.2f} кВт\n\n"
+        f"💡 Освещение:\n"
+        f"• Максимум: {max_light:.2f} кВт ({time_max_light.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Минимум: {min_light:.2f} кВт ({time_min_light.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Среднее: {mean_light:.2f} кВт"
+    )
+
+    data['anal'] = out
+    return data
 
 
 @app.route('/anal_3', methods=['POST'])
 def anal_3():
-    data = None
-    return jsonify(data)
+    data = {}
+
+    # Clean and prepare data
+    df_clean = df.dropna(subset=['date', 'Appliances', 'lights']).copy()
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    if df_clean.empty:
+        data['anal'] = "Нет данных для анализа после удаления NaN."
+        return data
+
+    # Total energy
+    df_clean['total_energy'] = df_clean['Appliances'] + df_clean['lights']
+
+    # Resample to hourly
+    hourly_sum = df_clean.resample('h', on='date')['total_energy'].sum().reset_index()
+    hourly_appliances = df_clean.resample('h', on='date')['Appliances'].sum().reset_index()
+    hourly_lights = df_clean.resample('h', on='date')['lights'].sum().reset_index()
+
+    max_total = hourly_sum['total_energy'].max()
+    min_total = hourly_sum['total_energy'].min()
+    mean_total = hourly_sum['total_energy'].mean()
+    time_max_total = hourly_sum.loc[hourly_sum['total_energy'].idxmax(), 'date']
+    time_min_total = hourly_sum.loc[hourly_sum['total_energy'].idxmin(), 'date']
+
+    max_app = hourly_appliances['Appliances'].max()
+    min_app = hourly_appliances['Appliances'].min()
+    mean_app = hourly_appliances['Appliances'].mean()
+    time_max_app = hourly_appliances.loc[hourly_appliances['Appliances'].idxmax(), 'date']
+    time_min_app = hourly_appliances.loc[hourly_appliances['Appliances'].idxmin(), 'date']
+
+    max_light = hourly_lights['lights'].max()
+    min_light = hourly_lights['lights'].min()
+    mean_light = hourly_lights['lights'].mean()
+    time_max_light = hourly_lights.loc[hourly_lights['lights'].idxmax(), 'date']
+    time_min_light = hourly_lights.loc[hourly_lights['lights'].idxmin(), 'date']
+
+    out = (
+        f"📊 Почасовой анализ энергопотребления:\n\n"
+        f"🔋 Общее энергопотребление:\n"
+        f"• Максимум: {max_total:.2f} кВт ({time_max_total.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Минимум: {min_total:.2f} кВт ({time_min_total.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Среднее: {mean_total:.2f} кВт\n\n"
+        f"🔌 Приборы:\n"
+        f"• Максимум: {max_app:.2f} кВт ({time_max_app.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Минимум: {min_app:.2f} кВт ({time_min_app.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Среднее: {mean_app:.2f} кВт\n\n"
+        f"💡 Освещение:\n"
+        f"• Максимум: {max_light:.2f} кВт ({time_max_light.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Минимум: {min_light:.2f} кВт ({time_min_light.strftime('%d.%m.%Y %H:%M')})\n"
+        f"• Среднее: {mean_light:.2f} кВт"
+    )
+
+    data['anal'] = out
+    return data
 
 
 @app.route('/anal_4', methods=['POST'])

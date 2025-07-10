@@ -47,6 +47,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_2">
           Показать анализ
         </button>
+        <div id="anal_2" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -57,6 +58,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_3">
           Показать анализ
         </button>
+        <div id="anal_3" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -67,6 +69,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_4">
           Показать анализ
         </button>
+        <div id="anal_4" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -79,6 +82,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_5">
           Показать анализ
         </button>
+        <div id="anal_5" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -91,6 +95,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_6">
           Показать анализ
         </button>
+        <div id="anal_6" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -104,6 +109,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_7">
           Показать анализ
         </button>
+        <div id="anal_7" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -117,6 +123,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_8">
           Показать анализ
         </button>
+        <div id="anal_8" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -127,6 +134,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_9">
           Показать анализ
         </button>
+        <div id="anal_9" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -137,6 +145,7 @@
         <button class="btn btn-primary w-100 py-2" id="anal_b_10">
           Показать анализ
         </button>
+        <div id="anal_10" class="mt-3" style="display: none; white-space: pre-wrap; font-size: 1.1rem;"></div>
       </div>
     </div>
 
@@ -250,6 +259,7 @@
 
 <!-- Анализ графиков-->
     <script>
+      // анализ 1
       document.getElementById("anal_b_1").onclick = function () {
       const container = document.getElementById("anal_1");
 
@@ -268,6 +278,50 @@
       } else {
         container.style.display = "none";
         document.getElementById("anal_b_1").textContent = "Показать анализ";
+      }
+    };
+
+    // анализ 2
+    document.getElementById("anal_b_2").onclick = function () {
+    const container = document.getElementById("anal_2");
+
+    if (container.style.display === "none") {
+      fetch("/anal_2", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          container.textContent = data.anal;
+          container.style.display = "block";
+          document.getElementById("anal_b_2").textContent = "Скрыть анализ";
+        })
+        .catch(() => {
+          container.textContent = "Ошибка при загрузке анализа.";
+          container.style.display = "block";
+        });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_2").textContent = "Показать анализ";
+      }
+    };
+
+    // анализ 3
+    document.getElementById("anal_b_3").onclick = function () {
+    const container = document.getElementById("anal_3");
+
+    if (container.style.display === "none") {
+      fetch("/anal_3", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          container.textContent = data.anal;
+          container.style.display = "block";
+          document.getElementById("anal_b_3").textContent = "Скрыть анализ";
+        })
+        .catch(() => {
+          container.textContent = "Ошибка при загрузке анализа.";
+          container.style.display = "block";
+        });
+      } else {
+        container.style.display = "none";
+        document.getElementById("anal_b_3").textContent = "Показать анализ";
       }
     };
     </script>
