@@ -106,7 +106,6 @@ def validate_data(df):
             raise TypeError("Ошибки типов данных:\n" + "\n".join(type_errors))
 
     except Exception as e:
-        print(f"Ошибка при валидации файла: {str(e)}")
         return False, e
 
     return True, None
