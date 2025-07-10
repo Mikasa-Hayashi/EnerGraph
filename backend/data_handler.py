@@ -13,6 +13,21 @@ def load_data(filepath):
     return df
 
 
+def find_sensors_count(df):
+    columns = df.columns
+
+    temp_sensors = 0
+    humidity_sensors = 0
+
+    for column in columns:
+        if column.startswith('T') and column[1:].isdigit():
+            temp_sensors += 1
+        elif column.startswith('RH_') and column[3:].isdigit():
+            humidity_sensors += 1
+
+    return temp_sensors, humidity_sensors
+
+
 def validate_data(df):
 
     # Ожидаемые столбцы с их типами данных
