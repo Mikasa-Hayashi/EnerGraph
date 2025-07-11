@@ -83,7 +83,7 @@ def validate_data(df):
         check_sensor_sequence(df, errors, 'RH')
 
         if errors:
-            raise ValueError("Обнаружены ошибки:\n" + "\n".join(errors))
+            raise ValueError("Обнаружены ошибки:\n" + "; ".join(errors))
 
         expected_dtypes = {
             'date': 'datetime64[ns]',
@@ -110,7 +110,7 @@ def validate_data(df):
                 type_errors.append(f"Столбец '{col}': ожидаемый тип {expected_type}, получен {actual_type}")
 
         if type_errors:
-            raise TypeError("Ошибки типов данных:\n" + "\n".join(type_errors))
+            raise TypeError("Ошибки типов данных:\n" + "; ".join(type_errors))
 
     except Exception as e:
         return False, e
